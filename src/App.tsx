@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-const App: React.FC = () => {
+import './clientConfig/api-config';
+import usePrev from './customHooks/usePrev';
+import { setCurrentWindow } from './redux/activeWindow/activeWindow';
+
+import Login from './Pages/Login/Login';
+import MainPage from './Pages/MainPage/MainPage';
+import { AppState } from '.';
+
+
+interface IApp {
+  activeWindow: string,
+  setCurrentWindow: (activeWindow: string) => void
+};
+
+const App = (props: IApp) => {
+  const { activeWindow } = props;
+
+  const prevActiveWindow = usePrev(activeWindow);
+
+  useEffect(() => {
+    if (activeWindow && prevActiveWindow !== activeWindow) {
+      window.location.href = activeWindow;
+      return;
+    }
+  }, [activeWindow]);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+
+        <Switch>
+          <Route path="/login" component={Login} />
+
+          <Route exact path="/" component={MainPage} />
+        </Switch>
+      </Router>
     </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state: AppState) => ({
+  activeWindow: state.activeWindow.path,
+});
+const mapDispatchToProps = {
+  setCurrentWindow,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
