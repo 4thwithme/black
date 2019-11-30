@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const config = require("config");
+const socket = require('./socket/socket');
+
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require('./routes/auth.route');
@@ -31,11 +33,17 @@ mongoose
     useUnifiedTopology: true
   })
   .then(() => {
-    console.log("Connected to MongoDB...")
+    console.log("Connected to MongoDB...");
+
     if (!config.get("myprivatekey")) {
       console.error("FATAL ERROR: myprivatekey is not defined.");
+
       process.exit(1);
     }
-    app.listen(port, () => console.log(`Listening on port ${port}...`));
+    app.listen(port, () => {
+      console.log(`Listening on port ${port}...`);
+
+      socket();
+    });
   })
   .catch(err => console.error("Could not connect to MongoDB..."));

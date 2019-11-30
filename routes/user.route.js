@@ -4,6 +4,11 @@ const { User, validate } = require("../models/user.model");
 const express = require("express");
 const router = express.Router();
 
+router.get("/", auth, async (req, res) => {
+  const allUsers = await User.find().select("-password");
+  res.send(allUsers);
+});
+
 router.get("/current", auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
   res.send(user);

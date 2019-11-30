@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import API from '../../api/api';
 import { handleAuthLogout } from '../../redux/auth/authReducer';
 
+import WebSocket from '../../components/WebSocket/WebSocket';
+
 
 const MainPage = (props) => {
   const logoutHandler = async () => {
@@ -13,6 +15,8 @@ const MainPage = (props) => {
   };
 
   return <>
+    <WebSocket />
+
     <h1>BLACK</h1>
 
     <button onClick={logoutHandler}>Log Out</button>
