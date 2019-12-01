@@ -1,0 +1,9 @@
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100vh;
+  justify-content: flex-end;
+  max-width: calc(100vw - 320px);
+  padding: 0px 10px;
+}

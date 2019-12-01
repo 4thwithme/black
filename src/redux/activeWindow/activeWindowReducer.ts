@@ -15,8 +15,7 @@ const initialState = {
   path: '/login',
 };
 
-export default (state = initialState, action: IAction) => {
-  const { type, payload } = action;
+export default (state = initialState, { type, payload }: IAction) => {
   switch (type) {
     case SET_CURRENT_WINDOW:
       return {

@@ -10,7 +10,6 @@ const Socket = () => {
     return () => {
       ws.close();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ws]);
 
 

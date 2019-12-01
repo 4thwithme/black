@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
     default: false,
   },
   //give different access rights if admin or not 
-  isAdmin: Boolean
+  isAdmin: Boolean,
+  chats: Array
 });
 
 UserSchema.methods.generateAuthToken = function () {

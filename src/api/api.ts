@@ -7,11 +7,14 @@ const loginUser = (name: string, pass: string) => axios.put('auth', { name, pass
 
 const logoutUser = () => axios.delete('auth', config);
 
-const getAllUsers = () => axios.get('users/current', config);
+const getAllUsers = () => axios.get('users', config);
+
+const getAllChats = () => axios.get('chat', config)
 
 
 export default {
   loginUser,
   logoutUser,
   getAllUsers,
+  getAllChats,
 }

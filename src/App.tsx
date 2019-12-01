@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './clientConfig/api-config';
 import usePrev from './customHooks/usePrev';
-import { setCurrentWindow } from './redux/activeWindow/activeWindow';
+import { setCurrentWindow } from './redux/activeWindow/activeWindowReducer';
 
 import Login from './Pages/Login/Login';
-import MainPage from './Pages/MainPage/MainPage';
 import { AppState } from '.';
+import MainPage from './Pages/MainPage/MainPage';
 
 
 interface IApp {
@@ -26,7 +26,7 @@ const App = (props: IApp) => {
       window.location.href = activeWindow;
       return;
     }
-  }, [activeWindow]);
+  }, [prevActiveWindow, activeWindow]);
 
 
   return (

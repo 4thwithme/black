@@ -1,10 +1,12 @@
 import { Dispatch } from "redux";
-import { IAction, IUser } from "../types";
+import { IAction, IUserLogin } from "../types";
+import { getAllUsers } from "../users/userReducer";
+import { getAllChats } from "../chats/chatsReducer";
 
-const AUTH_LOGIN = 'AUTH_LOGIN';
+export const AUTH_LOGIN = 'AUTH_LOGIN';
 
 
-export const handleAuthLogin = (currentUser: IUser) => (dispatch: Dispatch) => {
+export const handleAuthLogin = (currentUser: IUserLogin) => (dispatch: Dispatch) => {
   if (currentUser) {
     sessionStorage.setItem('x-dark-token', currentUser["x-dark-token"]);
   }
@@ -22,23 +24,23 @@ export const handleAuthLogout = () => (dispatch: Dispatch) => {
   dispatch({ type: AUTH_LOGIN });
 };
 
+export const initApp = () => (dispatch: any) => {
+  console.log('INIT APP STARTED');
+
+  dispatch(getAllUsers());
+  dispatch(getAllChats());
+};
+
 const initialState = {
   currentUser: null
 };
 
-export default (state = initialState, action: IAction) => {
-  const { type, payload } = action;
+export default (state = initialState, { type, payload }: IAction) => {
   switch (type) {
     case AUTH_LOGIN: {
       return {
         ...state,
         currentUser: payload,
-      }
-    }
-    case AUTH_LOGIN: {
-      return {
-        ...state,
-        currentUser: null
       }
     }
 

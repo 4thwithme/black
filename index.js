@@ -4,9 +4,9 @@ const cookieParser = require('cookie-parser');
 const config = require("config");
 const socket = require('./socket/socket');
 
-
 const usersRoute = require("./routes/user.route");
 const authRouter = require('./routes/auth.route');
+const chatRouter = require('./routes/chat.route');
 
 const port = process.env.PORT || 9999;
 
@@ -26,11 +26,13 @@ app.use(express.json());
 
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRouter);
+app.use("/api/chat", chatRouter);
 
 mongoose
   .connect("mongodb://localhost/black", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => {
     console.log("Connected to MongoDB...");

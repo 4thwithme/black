@@ -4,6 +4,7 @@ interface ISpinnerProps {
   width?: string | number,
   height?: string | number,
   className?: string,
+  spinnerStyles?: any,
 }
 
 const Spinner = ({ className, width = "100%", height = "100%" }: ISpinnerProps) => (

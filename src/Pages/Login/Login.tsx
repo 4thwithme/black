@@ -2,16 +2,21 @@ import React, { useState } from 'react';
 
 import './Login.scss';
 import API from '../../api/api';
-import { setCurrentWindow } from '../../redux/activeWindow/activeWindow';
+import { setCurrentWindow } from '../../redux/activeWindow/activeWindowReducer';
 import { connect } from 'react-redux';
 import { handleAuthLogin } from '../../redux/auth/authReducer';
+import { IUserLogin } from '../../redux/types';
 
 interface ISetState {
   name: string,
   pass: string,
 }
+interface ILogin {
+  setCurrentWindow: (path: string) => void,
+  handleAuthLogin: (data: IUserLogin) => void,
+}
 
-const Login: React.FC = (props: any) => {
+const Login = (props: ILogin) => {
   const [state, setState] = useState<ISetState>({
     name: '',
     pass: '',
@@ -27,15 +32,15 @@ const Login: React.FC = (props: any) => {
     });
   };
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    API.loginUser(state.name, state.pass)
-      .then(({ data }) => {
-        props.handleAuthLogin(data);
-        props.setCurrentWindow('/');
-      })
-      .catch(console.error);
+    const res = await API.loginUser(state.name, state.pass);
+    const data = res.data;
+
+    props.handleAuthLogin(data);
+
+    props.setCurrentWindow('/');
   };
 
   return (
