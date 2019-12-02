@@ -36,6 +36,10 @@ const ChatSchema = mongoose.Schema({
   },
 });
 
+ChatSchema.statics.updateLastInteraction = function (chatId, msgId) {
+  return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msgId }, { new: true });
+};
+
 const Chat = mongoose.model('Chat', ChatSchema);
 
 module.exports = Chat;

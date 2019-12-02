@@ -30,4 +30,8 @@ module.exports = {
     'Накуренный',
     'Неуклюжая',
   ],
+  SOCKET_TYPE: {
+    pong: 'pong',
+    message: 'message',
+  }
 }

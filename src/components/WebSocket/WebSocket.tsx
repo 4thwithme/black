@@ -1,7 +1,11 @@
-import { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 
-const Socket = () => {
+const SocketWrapper = (props: any) => {
+  const {
+    component: Children,
+  } = props;
+
   const ws = new WebSocket('ws://localhost:8888');
 
   useEffect(() => {
@@ -13,8 +17,18 @@ const Socket = () => {
   }, [ws]);
 
 
-  const setupSocket = () => {
+  const sendMsg = useCallback((chatId: string, msgForSend: string, senderId: string) => {
+    ws.send(JSON.stringify({
+      data: {
+        body: msgForSend,
+        chatId,
+        senderId,
+      },
+      type: 'message',
+    }));
+  }, [ws]);
 
+  const setupSocket = () => {
     ws.onopen = () => {
       console.log('Socket connected!)');
     };
@@ -32,11 +46,14 @@ const Socket = () => {
 
       ws.send(JSON.stringify({ data: 'pong', type: 'pong' }));
 
-      console.log('data:', data, '\ntype:', type)
+      console.log('CHAT SOCKET EVENT::::::>>> data:', data, 'type:', type)
     }
   }
 
-  return null;
+  return (
+    <Children sendMsg={sendMsg} />
+  )
 };
 
-export default Socket;
+
+export default SocketWrapper;

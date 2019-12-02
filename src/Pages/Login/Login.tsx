@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import './Login.scss';
 import API from '../../api/api';
 import { setCurrentWindow } from '../../redux/activeWindow/activeWindowReducer';
-import { connect } from 'react-redux';
 import { handleAuthLogin } from '../../redux/auth/authReducer';
+
 import { IUserLogin } from '../../redux/types';
+import { History } from 'history';
 
 interface ISetState {
   name: string,
@@ -14,6 +17,7 @@ interface ISetState {
 interface ILogin {
   setCurrentWindow: (path: string) => void,
   handleAuthLogin: (data: IUserLogin) => void,
+  history: History
 }
 
 const Login = (props: ILogin) => {
@@ -40,8 +44,12 @@ const Login = (props: ILogin) => {
 
     props.handleAuthLogin(data);
 
-    props.setCurrentWindow('/');
+    props.history.push('/')
   };
+
+
+  console.log(props);
+
 
   return (
     <main className="login-wrapper">
@@ -77,4 +85,4 @@ const mapDispatchToProps = {
   handleAuthLogin,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default withRouter(connect(null, mapDispatchToProps)(Login));

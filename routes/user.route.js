@@ -47,7 +47,7 @@ router.post("/create", async (req, res) => {
 
   await User.findOneAndUpdate({ _id: userRes.ops[0]._id }, { chats: [chatRes.ops[0]._id] });
 
-  res.send(200);
+  res.sendStatus(200);
 });
 
 module.exports = router;

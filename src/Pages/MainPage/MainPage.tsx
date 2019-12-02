@@ -1,13 +1,26 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { handleAuthLogout, initApp } from '../../redux/auth/authReducer';
+import { initApp } from '../../redux/auth/authReducer';
 import './MainPage.scss';
 
 import WebSocket from '../../components/WebSocket/WebSocket';
 import ChatList from '../../containers/ChatList/ChatList';
 import { AppState } from '../..';
 import ChatWindow from '../../containers/ChatWindow/ChatWindow';
+
+
+interface IPropsMainComponents {
+  sendMsg: (activeChatId: string, msg: string, senderId: string) => void
+}
+
+const MainComponents = (props: IPropsMainComponents) => (
+  <>
+    <ChatList />
+
+    <ChatWindow sendMsg={props.sendMsg} />
+  </>
+);
 
 
 const MainPage = ({ initApp, ...props }: any) => {
@@ -18,11 +31,7 @@ const MainPage = ({ initApp, ...props }: any) => {
 
   return (
     <main className="main">
-      <WebSocket />
-
-      <ChatList handleAuthLogout={props.handleAuthLogout} />
-
-      <ChatWindow />
+      <WebSocket component={MainComponents} />
     </main>
   );
 };
@@ -32,7 +41,6 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  handleAuthLogout,
   initApp,
 };
 

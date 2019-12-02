@@ -4,17 +4,24 @@ import { getAllUsers } from "../users/userReducer";
 import { getAllChats } from "../chats/chatsReducer";
 
 export const AUTH_LOGIN = 'AUTH_LOGIN';
-
+export const CURRENT_USER_UPDATE = 'CURRENT_USER_UPDATE';
 
 export const handleAuthLogin = (currentUser: IUserLogin) => (dispatch: Dispatch) => {
   if (currentUser) {
-    sessionStorage.setItem('x-dark-token', currentUser["x-dark-token"]);
-  }
+    const { ["x-dark-token"]: token } = currentUser;
 
-  dispatch({
-    type: AUTH_LOGIN,
-    payload: currentUser
-  });
+    delete currentUser["x-dark-token"];
+
+    sessionStorage.setItem('x-dark-token', token);
+    localStorage.setItem('user', JSON.stringify(currentUser));
+  }
+};
+
+export const currentUserUpdate = () => (dispatch: Dispatch) => {
+  const user = localStorage.getItem('user');
+  const parsedUser = user && JSON.parse(user);
+
+  dispatch({ type: CURRENT_USER_UPDATE, payload: parsedUser });
 };
 
 export const handleAuthLogout = () => (dispatch: Dispatch) => {
@@ -28,6 +35,7 @@ export const initApp = () => (dispatch: any) => {
   console.log('INIT APP STARTED');
 
   dispatch(getAllUsers());
+  dispatch(currentUserUpdate());
   dispatch(getAllChats());
 };
 
@@ -38,6 +46,12 @@ const initialState = {
 export default (state = initialState, { type, payload }: IAction) => {
   switch (type) {
     case AUTH_LOGIN: {
+      return {
+        ...state,
+        currentUser: payload,
+      }
+    }
+    case CURRENT_USER_UPDATE: {
       return {
         ...state,
         currentUser: payload,

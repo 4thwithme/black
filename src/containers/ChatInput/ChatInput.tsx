@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { connect } from 'react-redux';
 
 import './ChatInput.scss';
+import { AppState } from '../..';
+import { getCurrentUserId } from '../../redux/selectors';
 
+interface IProps {
+  activeChatId: string,
+  senderId: string,
+  sendMsg: (activeChatId: string, msg: string, senderId: string) => void,
+};
 
-const ChatInput = () => {
-  const [msg, setMsg] = useState('');
+const ChatInput = (props: IProps) => {
+  const [msg, setMsg] = useState<string>('');
+
+  const inputRef: any = useRef();
 
   const onEnterHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' && e.shiftKey) {
       return;
     }
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
 
-      alert(msg);
+      props.sendMsg(props.activeChatId, msg, props.senderId);
+      inputRef.current.innerText = '';
+      setMsg('');
     }
   };
 
   const onInputHandler = (e: any) => {
     setMsg(e.target.innerText);
-  }
+  };
 
   return (
     <div className="chat-input">
       <div
+        ref={inputRef}
         contentEditable
         onKeyDown={onEnterHandler}
         onInput={onInputHandler}
@@ -32,4 +46,9 @@ const ChatInput = () => {
   );
 };
 
-export default ChatInput;
+const mapStateToProps = (state: AppState) => ({
+  activeChatId: state.activeChat.activeChatId,
+  senderId: getCurrentUserId(state),
+});
+
+export default connect(mapStateToProps)(ChatInput);

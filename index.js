@@ -35,11 +35,7 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => {
-    console.log("Connected to MongoDB...");
-
     if (!config.get("myprivatekey")) {
-      console.error("FATAL ERROR: myprivatekey is not defined.");
-
       process.exit(1);
     }
     app.listen(port, () => {

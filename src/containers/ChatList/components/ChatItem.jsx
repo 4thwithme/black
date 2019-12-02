@@ -7,11 +7,13 @@ import './ChatItem.scss';
 import LazyLoadImage from '../../../components/LazyLoadImage/LazyLoadImage';
 
 
-const ChatItem = ({ chat, ...props }) => {
+const ChatItem = ({ chat, setActiveChatId, ...props }) => {
   console.log('CHAT ITEM RENDER');
 
   return (
-    <li className="chat-list-item">
+    <li
+      onClick={() => setActiveChatId(props.item)}
+      className="chat-list-item">
       <div className="chat-list-item__ava-wrap">
         <LazyLoadImage src={setAvatar(chat)} />
       </div>

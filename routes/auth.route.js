@@ -20,19 +20,20 @@ router.put('/', async (req, res) => {
 
   bcrypt.compare(req.body.password, user.password, (err, result) => {
     if (!result) res.sendStatus(401).send('Incorrect password');
-
-    const token = user.generateAuthToken();
-
-    res.cookie('x-dark-token', token, { maxAge: 28800000, httpOnly: false, domain: '' });
-    res.send({
-      _id: user._id,
-      name: user.name,
-      'x-dark-token': token
-    });
   });
-
   user.isOnline = true;
   await user.save();
+
+  const token = user.generateAuthToken();
+
+  res.cookie('x-dark-token', token, { maxAge: 28800000, httpOnly: false, domain: '' });
+
+  res.send({
+    _id: user._id,
+    name: user.name,
+    isOnline: user.isOnline,
+    'x-dark-token': token
+  });
 });
 
 router.delete('/', auth, async (req, res) => {
