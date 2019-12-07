@@ -13,12 +13,14 @@ import { History } from 'history';
 interface ISetState {
   name: string,
   pass: string,
-}
+};
+
 interface ILogin {
   setCurrentWindow: (path: string) => void,
   handleAuthLogin: (data: IUserLogin) => void,
   history: History
-}
+};
+
 
 const Login = (props: ILogin) => {
   const [state, setState] = useState<ISetState>({
