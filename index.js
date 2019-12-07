@@ -44,4 +44,4 @@ mongoose
       socket();
     });
   })
-  .catch(err => console.error("Could not connect to MongoDB..."));
+  .catch(err => console.error(err));

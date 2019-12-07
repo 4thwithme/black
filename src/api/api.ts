@@ -9,7 +9,7 @@ const logoutUser = () => axios.delete('auth', config);
 
 const getAllUsers = () => axios.get('users', config);
 
-const getAllChats = () => axios.get('chat', config)
+const getAllChats = () => axios.get('chat', config);
 
 
 export default {
