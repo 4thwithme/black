@@ -1,33 +1,56 @@
 const WebSocket = require('ws');
+const jwt = require("jsonwebtoken");
+const config = require("config");
+
 const Message = require('../models/Message.model');
 const Chat = require('../models/Chat.model');
 
+const { sendMsgToChat } =require('../utils/utils')
 const { SOCKET_TYPE } = require('../const/const');
 
 const socket = new WebSocket.Server({ port: 8888 });
 
 
-module.exports = () => socket.on('connection', (ws) => {
-  setInterval(() => {
-    ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
-  }, 10000);
 
+module.exports = () => socket.on('connection', (ws,req) => {
+  ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
+
+  const token = req.headers.cookie.split('=')[1];
+  const decoded = jwt.verify(token, config.get("myprivatekey"));
+  ws.connectedUserId = decoded._id;
+
+  
   ws.onmessage = async ({ data }) => {
     const parsedData = JSON.parse(data);
-    console.log(parsedData);
+    
+    const { type: payloadType } = parsedData;
 
-    const { data: payload } = parsedData;
+    switch (payloadType) {
+      case SOCKET_TYPE.pong: {
+        console.log(parsedData);
 
-    switch (parsedData.type) {
+        setTimeout(() => {
+          ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
+        }, 5000);
+        break;
+      }
+
       case SOCKET_TYPE.message: {
-        const message = await Message.collection.insertOne({ ...payload, date: Date.now() });
+        const newChatMsg = await Message.collection.insertOne({ ...parsedData, date: Date.now() });      
 
-        const res = await Chat.updateLastInteraction(payload.chatId, message.insertedId);
+        const updatedChat = await Chat.updateLastInteraction(parsedData.data.chatId, newChatMsg.insertedId);
 
-        socket.clients.forEach(client => {
-          console.log(client);
-        });
+        for (const client of socket.clients) {
+          if (client.connectedUserId === parsedData.data.senderId ) {
+            sendMsgToChat(client, updatedChat, newChatMsg.ops[0], 'out');
+            continue;
+          }
 
+          if (updatedChat.participants.includes(client.connectedUserId)) {
+            sendMsgToChat(client, updatedChat, newChatMsg.ops[0], 'inc');
+            continue;
+          }
+        }
         break;
       }
       default:

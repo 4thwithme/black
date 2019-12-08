@@ -3,7 +3,6 @@ const config = require("config");
 
 
 module.exports = (req, res, next) => {
-  // const token = req.headers["x-access-token"] || req.headers["authorization"];
   const token = req.headers["x-dark-token"] || req.headers["authorization"] || req.cookie['x-dark-token'];
 
   if (!token) return res.sendStatus(401).redirect('http://localhost:3000/login');

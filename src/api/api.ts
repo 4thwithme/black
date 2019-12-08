@@ -11,10 +11,13 @@ const getAllUsers = () => axios.get('users', config);
 
 const getAllChats = () => axios.get('chat', config);
 
+const getChatTimeline = (chatId: string) => axios.get(`chat/${chatId}`, config);
+
 
 export default {
   loginUser,
   logoutUser,
   getAllUsers,
   getAllChats,
+  getChatTimeline,
 }

@@ -23,3 +23,15 @@ export interface IChat {
   chatName: string,
   chatType: number,
 }
+
+export interface IMessageData {
+  body: string,
+  chatId: string,
+  senderId: string,
+}
+
+export interface IMessage {
+  data: IMessageData,
+  type: string,
+  date: number,
+}

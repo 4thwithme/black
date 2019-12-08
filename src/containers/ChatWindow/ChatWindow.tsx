@@ -7,14 +7,16 @@ import ChatTimeline from '../ChatTimeline/ChatTimeline';
 
 interface IProps {
   // activeChat: string,
-  sendMsg: (activeChatId: string, msg: string, senderId: string) => void
+  sendMsg: (activeChatId: string, msg: string, senderId: string) => void,
+  activeChatId: string,
 }
 
 const ChatWindow = (props: IProps) => {
 
   return (
     <section className="chat-window">
-      <ChatTimeline />
+  activeChatId: string,
+      <ChatTimeline activeChatId={props.activeChatId} />
 
       <ChatInput sendMsg={props.sendMsg} />
     </section>

@@ -1,11 +1,7 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, ReactType, ElementType } from 'react';
 
 
-const SocketWrapper = (props: any) => {
-  const {
-    component: Children,
-  } = props;
-
+const SocketWrapper = ({ component: Children }: any) => {
   const ws = new WebSocket('ws://localhost:8888');
 
   useEffect(() => {
@@ -15,7 +11,6 @@ const SocketWrapper = (props: any) => {
       ws.close();
     };
   }, [ws]);
-
 
   const sendMsg = useCallback((chatId: string, msgForSend: string, senderId: string) => {
     ws.send(JSON.stringify({
@@ -44,9 +39,16 @@ const SocketWrapper = (props: any) => {
     ws.onmessage = (e) => {
       const { data, type } = JSON.parse(e.data);
 
-      ws.send(JSON.stringify({ data: 'pong', type: 'pong' }));
+      switch (type) {
+        case 'ping':
+          ws.send(JSON.stringify({ data: 'pong', type: 'pong' }));
+          console.log('CHAT SOCKET EVENT::::::>>> data:', data, 'type:', type);
+          
+          break;
+        default:
+          break;
+      }
 
-      console.log('CHAT SOCKET EVENT::::::>>> data:', data, 'type:', type)
     }
   }
 

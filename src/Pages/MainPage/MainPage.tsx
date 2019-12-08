@@ -11,14 +11,17 @@ import ChatWindow from '../../containers/ChatWindow/ChatWindow';
 
 
 interface IPropsMainComponents {
-  sendMsg: (activeChatId: string, msg: string, senderId: string) => void
+  sendMsg: (activeChatId: string, msg: string, senderId: string) => void,
+  activeChatId: string,
 }
 
 const MainComponents = (props: IPropsMainComponents) => (
   <>
     <ChatList />
 
-    <ChatWindow sendMsg={props.sendMsg} />
+    {props.activeChatId &&
+      <ChatWindow activeChatId={props.activeChatId} sendMsg={props.sendMsg} />
+    }
   </>
 );
 
@@ -38,6 +41,7 @@ const MainPage = ({ initApp, ...props }: any) => {
 
 const mapStateToProps = (state: AppState) => ({
   users: state.users,
+  activeChatId: state.activeChat.activeChatId,
 });
 
 const mapDispatchToProps = {
