@@ -2,13 +2,14 @@ import { Dispatch } from "redux";
 import { IAction, IUserLogin } from "../types";
 import { getAllUsers } from "../users/userReducer";
 import { getAllChats } from "../chats/chatsReducer";
+import { setActiveChatId } from "../activeChat/activeChatReducer";
 
 export const AUTH_LOGIN = 'AUTH_LOGIN';
 export const CURRENT_USER_UPDATE = 'CURRENT_USER_UPDATE';
 
 export const handleAuthLogin = (currentUser: IUserLogin) => (dispatch: Dispatch) => {
   if (currentUser) {
-    const { ["x-dark-token"]: token } = currentUser;
+    const { "x-dark-token": token } = currentUser;
 
     delete currentUser["x-dark-token"];
 
@@ -33,7 +34,11 @@ export const handleAuthLogout = () => (dispatch: Dispatch) => {
 
 export const initApp = () => (dispatch: any) => {
   console.log('INIT APP STARTED');
+  const activeChatId = localStorage.getItem('activeChatId');
 
+  if (activeChatId) {
+    dispatch(setActiveChatId(activeChatId));
+  }
   dispatch(getAllUsers());
   dispatch(currentUserUpdate());
   dispatch(getAllChats());

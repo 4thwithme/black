@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-const config: AxiosRequestConfig | undefined = { headers: { 'x-dark-token': sessionStorage.getItem('x-dark-token') } };
+const config: AxiosRequestConfig | undefined = { headers: { 'x-dark-token': sessionStorage.getItem('x-dark-token') }};
 
 
 const loginUser = (name: string, pass: string) => axios.put('auth', { name, password: pass });
@@ -11,7 +11,7 @@ const getAllUsers = () => axios.get('users', config);
 
 const getAllChats = () => axios.get('chat', config);
 
-const getChatTimeline = (chatId: string) => axios.get(`chat/${chatId}`, config);
+const getChatTimeline = (chatId: string) => axios.get('chat/timeline',{...config, params: { chatId }});
 
 
 export default {

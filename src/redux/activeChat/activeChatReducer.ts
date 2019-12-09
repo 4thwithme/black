@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
-import { IAction } from "../types";
+import { IAction, IMessage } from "../types";
 import API from "../../api/api";
 
-const SET_ACTIVE_CHAT_ID = 'SET_ACTIVE_CHAT_ID';
-const SET_CHAT_TIMELINE = 'SET_CHAT_TIMELINE';
-
+export const SET_ACTIVE_CHAT_ID = 'SET_ACTIVE_CHAT_ID';
+export const SET_CHAT_TIMELINE = 'SET_CHAT_TIMELINE';
+export const ADD_NEW_MSG = 'ADD_NEW_MSG';
 
 
 export const setActiveChatId = (id: string) => (dispatch: Dispatch) => {
@@ -12,6 +12,8 @@ export const setActiveChatId = (id: string) => (dispatch: Dispatch) => {
     type: SET_ACTIVE_CHAT_ID,
     payload: id
   });
+
+  localStorage.setItem('activeChatId', id);
 };
 
 export const getChatTimeline = (chatId: string) => async (dispatch: Dispatch) => {
@@ -19,7 +21,14 @@ export const getChatTimeline = (chatId: string) => async (dispatch: Dispatch) =>
 
   dispatch({
     type: SET_CHAT_TIMELINE,
-    payload: timeline
+    payload: timeline.data,
+  });
+};
+
+export const addNewMsgToActiveChat = (msg: IMessage) => (dispatch: Dispatch) => {
+  dispatch({
+    type: ADD_NEW_MSG,
+    payload: msg,
   })
 };
 
@@ -42,6 +51,13 @@ export default (state = initialState, { type, payload }: IAction) => {
       return {
         ...state,
         timeline: payload,
+      }
+    }
+
+    case ADD_NEW_MSG: {
+      return {
+        ...state,
+        timeline: [...state.timeline, payload]
       }
     }
 

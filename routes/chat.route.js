@@ -3,8 +3,17 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const Chat = require('../models/Chat.model');
 const { User } = require('../models/User.model');
+const Message =require('../models/Message.model');
 
 const router = express.Router();
+
+router.get(`/timeline/` , auth, async (req, res) => {
+  if (!req.query.chatId) return res.sendStatus(400);
+
+  const messages = await Message.getChatTimelineByChatId(req.query.chatId);
+
+  res.send(messages);
+});
 
 
 router.get('/', auth, async (req, res) => {
@@ -29,7 +38,6 @@ router.get('/', auth, async (req, res) => {
 
     return res.send(user);
   }
-
 });
 
 module.exports = router;

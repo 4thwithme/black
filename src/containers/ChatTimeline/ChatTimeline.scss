@@ -2,4 +2,56 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  overflow-y: scroll;
+
+  .chat-timeline-list {
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+      width: 100%;
+      padding: 5px 0;
+    }
+    &__msg-wrap {
+      max-width: 500px;
+      min-width: 300px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr 1fr ;
+    }
+
+    &__msg-body {
+      grid-row: 2/4;
+      grid-column: 2/4;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    &__ava-wrp {
+      height: 45px;
+      width: 45px;
+      grid-row: 1/4;
+      grid-column: 1/1;
+      border-radius: 50%;
+      overflow: hidden;
+      object-fit: contain;
+
+      & > img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &__info-block {
+      margin-left: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__msg-body {
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
 }

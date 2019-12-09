@@ -21,6 +21,7 @@ export interface IChat {
   unreadCount: number,
   lastInteraction: string,
   chatName: string,
+  _id: string,
   chatType: number,
 }
 
@@ -34,4 +35,5 @@ export interface IMessage {
   data: IMessageData,
   type: string,
   date: number,
+  _id: string,
 }

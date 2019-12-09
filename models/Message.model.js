@@ -20,6 +20,11 @@ const MessageSchema = mongoose.Schema({
   }
 });
 
+MessageSchema.statics.getChatTimelineByChatId = function (chatId) {
+ return this.find({'data.chatId': chatId}); 
+};
+
 const Message = mongoose.model('Message', MessageSchema);
+
 
 module.exports = Message;
