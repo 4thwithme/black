@@ -17,9 +17,9 @@ router.get(`/timeline/` , auth, async (req, res) => {
 
 
 router.get('/', auth, async (req, res) => {
-  const chats = [];
-
   if (!Object.values(req.body).length) {
+    const chats = [];
+    
     const user = await User.findById(req.user._id);
     const chatsIds = user.chats;
 

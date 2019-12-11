@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { IAction, IMessage } from "../types";
+import { IAction, INewMsg } from "../types";
 import API from "../../api/api";
 
 export const SET_ACTIVE_CHAT_ID = 'SET_ACTIVE_CHAT_ID';
@@ -25,10 +25,10 @@ export const getChatTimeline = (chatId: string) => async (dispatch: Dispatch) =>
   });
 };
 
-export const addNewMsgToActiveChat = (msg: IMessage) => (dispatch: Dispatch) => {
+export const addNewMsgToActiveChat = (data: INewMsg) => (dispatch: Dispatch) => {
   dispatch({
     type: ADD_NEW_MSG,
-    payload: msg,
+    payload: data,
   })
 };
 
@@ -57,7 +57,7 @@ export default (state = initialState, { type, payload }: IAction) => {
     case ADD_NEW_MSG: {
       return {
         ...state,
-        timeline: [...state.timeline, payload]
+        timeline: [...state.timeline, payload.msg]
       }
     }
 

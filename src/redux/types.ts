@@ -37,3 +37,8 @@ export interface IMessage {
   date: number,
   _id: string,
 }
+
+export interface INewMsg {
+  msg: IMessage,
+  chat: IChat,
+}

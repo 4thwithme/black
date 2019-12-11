@@ -1,14 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import showTimelineDate from '../../../utils/convertDate'
 import setAvatar from '../../../utils/setAvatar';
 import './ChatItem.scss';
 
 import LazyLoadImage from '../../../components/LazyLoadImage/LazyLoadImage';
 
 
-const ChatItem = ({ chat, setActiveChatId, ...props }) => {
-  console.log('CHAT ITEM RENDER');
+const ChatItem = ({ chat, setActiveChatId, currentUserId, ...props }) => {
+  console.log('CHAT ITEM RENDER', { chat, setActiveChatId, ...props });
+
+  const renderLastMsg = (lastMsg) => {
+    if (currentUserId === lastMsg.senderId) {
+      return 'You: ' + lastMsg.body;
+    }
+  };
 
   return (
     <li
@@ -27,8 +34,8 @@ const ChatItem = ({ chat, setActiveChatId, ...props }) => {
         </span>
 
         <span className="chat-list-item__last-msg">
-          {chat && chat.lastInteraction && chat.lastInteraction.body
-            ? chat.lastInteraction.body
+          {chat && chat.lastInteraction && chat.lastInteraction.data
+            ? renderLastMsg(chat.lastInteraction.data)
             : 'Chat is empty...'
           }
         </span>
@@ -37,7 +44,7 @@ const ChatItem = ({ chat, setActiveChatId, ...props }) => {
       <div className="chat-list-item__utils-block">
         <span className="chat-list-item__time">
           {chat && chat.lastInteraction && chat.lastInteraction.date
-            ? chat.lastInteraction.date
+            ? showTimelineDate(chat.lastInteraction.date)
             : '00:00'
           }
         </span>
@@ -53,6 +60,7 @@ const ChatItem = ({ chat, setActiveChatId, ...props }) => {
 
 const mapStateToProps = (state, ownProps) => ({
   chat: state.chats.entities[ownProps.item],
+  currentUserId: state.auth.currentUser._id,
 });
 
 export default connect(mapStateToProps)(ChatItem);

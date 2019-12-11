@@ -11,13 +11,26 @@
     &__item {
       width: 100%;
       padding: 5px 0;
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      display: grid; 
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     }
     &__msg-wrap {
+      grid-column: 1/4;
       max-width: 500px;
       min-width: 300px;
+      flex-grow: 1;
       display: grid;
       grid-template-columns: auto 1fr;
-      grid-template-rows: auto 1fr 1fr ;
+      grid-template-rows: auto 1fr 1fr;
+      background-color: #222;
+      padding: 5px 10px;
+      border-radius: 2px;
+    }
+    & [data-msg-type="inc"] {
+      grid-column: 3/7;
     }
 
     &__msg-body {

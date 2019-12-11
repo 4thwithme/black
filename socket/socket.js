@@ -15,10 +15,11 @@ const socket = new WebSocket.Server({ port: 8888 });
 module.exports = () => socket.on('connection', (ws,req) => {
   ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
 
-  const token = req.headers.cookie.split('=')[1];
-  const decoded = jwt.verify(token, config.get("myprivatekey"));
-  ws.connectedUserId = decoded._id;
-
+  if (req.headers.cookie) {
+    const token =  req.headers.cookie.split('=')[1];
+    const decoded = jwt.verify(token, config.get("myprivatekey"));
+    ws.connectedUserId = decoded._id;
+  }
   
   ws.onmessage = async ({ data }) => {
     const parsedData = JSON.parse(data);
@@ -38,7 +39,7 @@ module.exports = () => socket.on('connection', (ws,req) => {
       case SOCKET_TYPE.message: {
         const newChatMsg = await Message.collection.insertOne({ ...parsedData, date: Date.now() });      
 
-        const updatedChat = await Chat.updateLastInteraction(parsedData.data.chatId, newChatMsg.insertedId);
+        const updatedChat = await Chat.updateLastInteraction(parsedData.data.chatId, JSON.stringify(newChatMsg.ops[0]));
 
         for (const client of socket.clients) {
           if (client.connectedUserId === parsedData.data.senderId ) {

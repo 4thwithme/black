@@ -54,7 +54,7 @@ const SocketWrapper = ({ component: Children, addNewMsgToActiveChat }: any) => {
           case 'inc': 
           case 'sys': 
           case 'message': {
-            addNewMsgToActiveChat(data.msg);
+            addNewMsgToActiveChat(data);
             break;
           }
         default:

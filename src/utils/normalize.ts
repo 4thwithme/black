@@ -1,4 +1,4 @@
-interface IDataItem<T> {
+export interface IDataItem<T> {
   [key: string]: T; // id
 };
 
@@ -6,7 +6,7 @@ interface IEntities<T> {
   [key: string]: IDataItem<T>;
 };
 
-interface INormalizeResult<T> {
+export interface INormalizeResult<T> {
   entities: IEntities<T>;
   ids: T[];
 };

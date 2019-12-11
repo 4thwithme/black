@@ -36,8 +36,8 @@ const ChatSchema = mongoose.Schema({
   },
 });
 
-ChatSchema.statics.updateLastInteraction = function (chatId, msgId) {
-  return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msgId }, { new: true });
+ChatSchema.statics.updateLastInteraction = function (chatId, msg) {
+  return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msg }, { new: true });
 };
 
 const Chat = mongoose.model('Chat', ChatSchema);
