@@ -42,6 +42,8 @@ const ChatInput = (props: IProps) => {
         onKeyDown={onEnterHandler}
         onInput={onInputHandler}
         className="chat-input__input" />
+
+        {!msg.length && <span className="chat-input__placeholder">Message...</span>}
     </div>
   );
 };

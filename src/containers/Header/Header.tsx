@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPowerOff, faBars } from '@fortawesome/free-solid-svg-icons';
 
 import './Header.scss';
 import API from '../../api/api';
@@ -17,12 +19,23 @@ const Header = (props: IProps) => {
 
   return (
     <header className="header">
-      <div>
-        <h1>BLACK</h1>
+      <div className="header__wrap">
+        <button
+          className="header__settings"
+          onClick={() => console.log('settings here')}
+        >
+          <FontAwesomeIcon icon={faBars} size="2x" />
+        </button>
 
-        <button onClick={logoutHandler}>Log Out</button>
+        <h1 className="header__head">BLACK</h1>
 
-        <button onClick={() => API.getAllUsers()}>Get all users</button>
+        <button
+          className="header__logout"
+          onClick={logoutHandler}
+        >
+          <FontAwesomeIcon icon={faPowerOff} size="2x" />
+        </button>
+
       </div>
     </header>
   );

@@ -11,7 +11,7 @@ const getAllUsers = () => axios.get('users', config);
 
 const getAllChats = () => axios.get('chat', config);
 
-const getChatTimeline = (chatId: string) => axios.get('chat/timeline',{...config, params: { chatId }});
+const getChatTimeline = (chatId: string, limit: number, offset: number) => axios.get('chat/timeline',{...config, params: { chatId, limit, offset }});
 
 
 export default {

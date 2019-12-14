@@ -10,9 +10,15 @@ const router = express.Router();
 router.get(`/timeline/` , auth, async (req, res) => {
   if (!req.query.chatId) return res.sendStatus(400);
 
-  const messages = await Message.getChatTimelineByChatId(req.query.chatId);
+  const messages = await Message.getChatTimelineByChatId(
+    req.query.chatId,
+    parseInt(req.query.limit),
+    parseInt(req.query.offset)
+  );
 
-  res.send(messages);
+  const reversedMesseges = messages.reverse();
+
+  res.send(reversedMesseges);
 });
 
 

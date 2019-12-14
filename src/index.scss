@@ -17,11 +17,13 @@ body {
   background-color: #111;
   color: #bdbdbd;
 }
-* {
+div, span, h1, h2, h3, h4, h5, h6, article, aside, main, button, input, ul, li, ol {
   line-height: 1.15;
   padding: 0;
   margin: 0;
   list-style: none;
   text-decoration: none;
+  border: none;
+  outline: none;
   color: #bdbdbd;
 }

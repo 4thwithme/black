@@ -20,8 +20,12 @@ const MessageSchema = mongoose.Schema({
   }
 });
 
-MessageSchema.statics.getChatTimelineByChatId = function (chatId) {
- return this.find({'data.chatId': chatId}); 
+MessageSchema.statics.getChatTimelineByChatId = function (chatId, lim = 20, offset = 0) {
+  // return this.find({'data.chatId': chatId}); 
+  return this.find({'data.chatId': chatId})
+    .sort({"date" : -1})
+    .skip(offset)
+    .limit(lim); 
 };
 
 const Message = mongoose.model('Message', MessageSchema);

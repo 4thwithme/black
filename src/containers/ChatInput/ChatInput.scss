@@ -1,9 +1,10 @@
 .chat-input {
   display: flex;
+  padding-top: 16px;
+  position: relative;
 
   &__input {
     border: 1px solid rgb(41, 41, 41);
-
     flex-grow: 1;
     position: relative;
     padding: 6px 20px;
@@ -16,5 +17,13 @@
     font-size: 16px;
     text-align: left;
     white-space: pre-wrap;
+  }
+
+  &__placeholder {
+    position: absolute;
+    left: 21px;
+    bottom: 18px;
+    pointer-events: none;
+    opacity: 0.3;
   }
 }
