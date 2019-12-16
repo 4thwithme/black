@@ -11,8 +11,11 @@ const getAllUsers = () => axios.get('users', config);
 
 const getAllChats = () => axios.get('chat', config);
 
-const getChatTimeline = (chatId: string, limit: number, offset: number) => axios.get('chat/timeline',{...config, params: { chatId, limit, offset }});
+const getChatTimeline = (chatId: string, limit: number, offset: number) => {
+  return axios.get('chat/timeline', {...config, params: { chatId, limit, offset }});
+};
 
+const getParticipantsByQuery = (q: string) => axios.get('users/search', {...config, params: {q}});
 
 export default {
   loginUser,
@@ -20,4 +23,5 @@ export default {
   getAllUsers,
   getAllChats,
   getChatTimeline,
+  getParticipantsByQuery,
 }

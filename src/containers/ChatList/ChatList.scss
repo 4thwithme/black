@@ -5,4 +5,29 @@
   max-width: 300px;
   display: flex;
   flex-direction: column;
+
+  .searcher {
+    &__searcher-wrap { 
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      border-bottom: solid 1px rgb(41, 41, 41);
+      font-size: 14px;
+      position: relative;
+    }
+    &__input {
+      background-color: transparent;
+      border: solid 1px #333;
+      border-radius: 4px;
+      padding: 8px 25px;
+      width: 100%;
+      font-size: 16px;
+    }
+    &__icon {
+      position: absolute;
+      right: 14px;
+      top: 13px;
+    }
+  }
 }

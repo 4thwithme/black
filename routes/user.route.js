@@ -10,11 +10,27 @@ const router = express.Router();
 
 
 router.get("/", auth, async (req, res) => {
-  const allUsers = await User.find().select("-password");
+    const allUsers = await User.find().select("-password");
+    
+    const users = allUsers.filter(user => user._id.toString() !== req.user._id);
+    
+    res.send(users);
+});
 
-  const users = allUsers.filter(user => user._id.toString() !== req.user._id);
+router.get("/search", auth, async (req, res) => {
+  if (req.query.q && req.query.q.length) {
+    const usersByQuery = await User
+      .find({name:  { $regex: req.query.q, $options: "i" } })
+      .select("-password");
 
-  res.send(users);
+      console.log(usersByQuery)
+      
+      const users = usersByQuery.filter(user => user._id.toString() !== req.user._id);
+
+      return res.send(users);
+  } else {     
+    res.send([]);
+  }
 });
 
 router.get("/current", auth, async (req, res) => {

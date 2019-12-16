@@ -19,7 +19,7 @@ const List = (props: IPropsList) => {
     <ul className={className}>
       {listItems.map(listItem => {
         return <ListItemComponent
-          key={listItem.id | listItem}
+          key={listItem._id || listItem}
           item={listItem}
           {...props.listItemProps} />
       })}

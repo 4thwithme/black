@@ -69,8 +69,12 @@
       margin-left: 10px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-weight: bold;
       color: #eee;
+    }
+    &__time {
+      font-size: 12px;
     }
 
     &__msg-body {
