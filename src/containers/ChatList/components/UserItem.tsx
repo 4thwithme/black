@@ -5,6 +5,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import setAvatar from '../../../utils/setAvatar';
 
 import { IUser } from '../../../redux/types';
+import API from '../../../api/api';
 
 interface IProps {
   item: IUser,
@@ -12,15 +13,17 @@ interface IProps {
 
 
 const UserItem = ({item}: IProps) => {
+
+  const startChat = async () => {
+    await API.startChatByUserId(item._id);
+  };
+
   return (
-    <li
-      onClick={() => console.log('alallaa')}
-      className="chat-list-item"
-    >
+    <li className="chat-list-item">
       <div
         data-isonline={item.isOnline}
         className="chat-list-item__ava-wrap"
-      >
+        >
         <img src={setAvatar(item)} alt="user avatar" />
       </div>
 
@@ -31,7 +34,9 @@ const UserItem = ({item}: IProps) => {
       </div>
 
       <div className="chat-list-item__utils-block chat-list-item__utils-block--search">
-        <span className="chat-list-item__add-conversation">
+        <span 
+          onClick={startChat}
+          className="chat-list-item__add-conversation">
           <FontAwesomeIcon icon={faPlus} />
         </span>
       </div>

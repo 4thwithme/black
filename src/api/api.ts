@@ -17,6 +17,8 @@ const getChatTimeline = (chatId: string, limit: number, offset: number) => {
 
 const getParticipantsByQuery = (q: string) => axios.get('users/search', {...config, params: {q}});
 
+const startChatByUserId = (userId: string) => axios.post('chat', {userId} ,config)
+
 export default {
   loginUser,
   logoutUser,
@@ -24,4 +26,5 @@ export default {
   getAllChats,
   getChatTimeline,
   getParticipantsByQuery,
+  startChatByUserId,
 }

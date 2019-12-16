@@ -4,6 +4,7 @@ const auth = require("../middleware/auth");
 const Chat = require('../models/Chat.model');
 const { User } = require('../models/User.model');
 const Message =require('../models/Message.model');
+const { CHAT_TYPE } = require('../const/const');
 
 const router = express.Router();
 
@@ -44,6 +45,14 @@ router.get('/', auth, async (req, res) => {
 
     return res.send(user);
   }
+});
+
+router.post('/', auth, async (req, res) => {
+  if (!req.body && req.body.userId) return res.sendStatus(400);
+
+  const participants = [req.user._id, req.body.userId ]
+
+  Chat.createNewChat(participants, CHAT_TYPE.dialog);
 });
 
 module.exports = router;

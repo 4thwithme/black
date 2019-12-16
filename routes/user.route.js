@@ -22,8 +22,6 @@ router.get("/search", auth, async (req, res) => {
     const usersByQuery = await User
       .find({name:  { $regex: req.query.q, $options: "i" } })
       .select("-password");
-
-      console.log(usersByQuery)
       
       const users = usersByQuery.filter(user => user._id.toString() !== req.user._id);
 

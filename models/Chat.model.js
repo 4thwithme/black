@@ -40,6 +40,10 @@ ChatSchema.statics.updateLastInteraction = function (chatId, msg) {
   return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msg }, { new: true });
 };
 
+ChatSchema.statics.createNewChat = function (participants, type) {
+  return console.log(participants, type)
+};
+
 const Chat = mongoose.model('Chat', ChatSchema);
 
 module.exports = Chat;
