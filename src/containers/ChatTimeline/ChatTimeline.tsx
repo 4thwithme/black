@@ -28,10 +28,17 @@ const ChatTimeline = (props: IProps) => {
   const timelineRef: any = useRef();
 
   const prevMsgCount = usePrev(messages.length);
+  const prevActiveChatId = usePrev(props.activeChatId);
 
   useEffect(() => {
-    props.getChatTimeline(props.activeChatId);
+      props.getChatTimeline(props.activeChatId);
   }, []);
+
+  useEffect(() => {
+    if (prevActiveChatId !== props.activeChatId) {
+      props.getChatTimeline(props.activeChatId);
+    }
+  }, [props.activeChatId]);
   
   useEffect(() => {
     setMessages(props.timeline)

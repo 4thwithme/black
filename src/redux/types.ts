@@ -42,3 +42,8 @@ export interface INewMsg {
   msg: IMessage,
   chat: IChat,
 }
+
+export interface INewChat {
+  chat: IChat,
+  participantsObjects: IUser[],
+}

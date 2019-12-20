@@ -3,8 +3,9 @@ import normalize from "../../utils/normalize";
 
 import { Dispatch } from "redux";
 import { IAction } from "../types";
+import { ADD_NEW_CHAT } from "../chats/chatsReducer";
 
-const GET_ALL_USERS = 'GET_ALL_USERS';
+export const GET_ALL_USERS = 'GET_ALL_USERS';
 
 
 export const getAllUsers = () => async (dispatch: Dispatch) => {
@@ -30,6 +31,13 @@ export default (state = initialState, { type, payload }: IAction) => {
         ...state,
         entities: payload.entities,
         ids: payload.ids,
+      }
+    }
+    case ADD_NEW_CHAT: {
+      return {
+        ...state,
+        entities: {...state.entities, ...payload.chat.entities},
+        ids: [...payload.chat.ids, ...state.ids],
       }
     }
 

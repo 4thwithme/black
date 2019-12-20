@@ -15,6 +15,20 @@ const ChatItem = ({ chat, setActiveChatId, currentUserId, ...props }) => {
     if (currentUserId === lastMsg.senderId) {
       return 'You: ' + lastMsg.body;
     }
+    else {
+      return lastMsg.body
+    }
+  };
+
+  const setChatName = () => {
+    switch (chat.chatType) {
+      case 1: {
+        const secondUserId = chat.participants.find(id => id !== currentUserId); 
+        return chat.users && chat.users[secondUserId].name;
+      }
+      default:
+        return chat.chatName;
+    }
   };
 
   return (
@@ -28,7 +42,7 @@ const ChatItem = ({ chat, setActiveChatId, currentUserId, ...props }) => {
       <div className="chat-list-item__info-block">
         <span className="chat-list-item__chat-name">
           {chat
-            ? chat.chatName
+            ? setChatName()
             : 'Chat name loading...'
           }
         </span>

@@ -39,9 +39,9 @@ export const initApp = () => (dispatch: any) => {
   if (activeChatId) {
     dispatch(setActiveChatId(activeChatId));
   }
+  dispatch(getAllChats());
   dispatch(getAllUsers());
   dispatch(currentUserUpdate());
-  dispatch(getAllChats());
 };
 
 const initialState = {

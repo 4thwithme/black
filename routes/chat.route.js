@@ -3,8 +3,9 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const Chat = require('../models/Chat.model');
 const { User } = require('../models/User.model');
-const Message =require('../models/Message.model');
-const { CHAT_TYPE } = require('../const/const');
+const Message = require('../models/Message.model');
+const { sendSocket } =  require('../socket/socket');
+const { CHAT_TYPE, SOCKET_TYPE} = require('../const/const');
 
 const router = express.Router();
 
@@ -50,9 +51,24 @@ router.get('/', auth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
   if (!req.body && req.body.userId) return res.sendStatus(400);
 
-  const participants = [req.user._id, req.body.userId ]
+  const participants = [req.user._id, req.body.userId];
 
-  Chat.createNewChat(participants, CHAT_TYPE.dialog);
+  const newChat = await Chat.createNewChat(participants, CHAT_TYPE.dialog);
+
+    const user1 = await User.findById(req.user._id);
+    const user2 = await User.findById(req.body.userId);
+    user1.chats.push(newChat.insertedId);
+    user2.chats.push(newChat.insertedId);
+    await user1.save();
+    await user2.save();
+
+    sendSocket(
+      [user1._id, user2._id],
+      {chat: newChat.ops[0], participantsObjects: [user1, user2]},
+      SOCKET_TYPE.newChat
+    );
+
+    res.sendStatus(200);
 });
 
 module.exports = router;

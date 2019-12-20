@@ -21,4 +21,6 @@ export const getUsersForChat = createSelector(
     if (participant) {
       return participant;
     }
-  });
+  }
+);
+

@@ -51,7 +51,7 @@ router.post("/create", async (req, res) => {
   });
 
   const chatRes = await Chat.collection.insertOne({
-    participants: [userRes.ops[0]._id],
+    participants: [userRes.insertedId],
     chatName: 'Saved messages',
     chatType: CHAT_TYPE.saved,
     ava: "",
@@ -59,7 +59,7 @@ router.post("/create", async (req, res) => {
     lastInteraction: "",
   });
 
-  await User.findOneAndUpdate({ _id: userRes.ops[0]._id }, { chats: [chatRes.ops[0]._id] });
+  await User.findOneAndUpdate({ _id: userRes.insertedId }, { chats: [chatRes.insertedId] });
 
   res.sendStatus(200);
 });

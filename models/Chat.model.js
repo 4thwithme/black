@@ -36,12 +36,19 @@ const ChatSchema = mongoose.Schema({
   },
 });
 
-ChatSchema.statics.updateLastInteraction = function (chatId, msg) {
+ChatSchema.statics.updateLastInteraction = function(chatId, msg) {
   return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msg }, { new: true });
 };
 
-ChatSchema.statics.createNewChat = function (participants, type) {
-  return console.log(participants, type)
+ChatSchema.statics.createNewChat = function(participants, type) {
+  return this.collection.insertOne({
+    participants: participants,
+    chatName: 'DialogName',
+    chatType: type,
+    ava: "",
+    unreadCount: 0,
+    lastInteraction: "",
+  });
 };
 
 const Chat = mongoose.model('Chat', ChatSchema);

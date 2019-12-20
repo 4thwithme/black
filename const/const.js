@@ -33,5 +33,9 @@ module.exports = {
   SOCKET_TYPE: {
     pong: 'pong',
     message: 'message',
+    inc: 'inc',
+    out: 'out',
+    sys: 'sys',
+    newChat: 'new-chat',
   }
 }

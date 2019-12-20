@@ -1,9 +1,13 @@
 import React, { useEffect, useCallback } from 'react';
-import { addNewMsgToActiveChat } from '../../redux/activeChat/activeChatReducer';
 import { connect } from 'react-redux';
 
+import { addNewMsgToActiveChat } from '../../redux/activeChat/activeChatReducer';
+import { addNewChat } from '../../redux/chats/chatsReducer';
+import { SOCKET_TYPE } from '../../api/const';
 
-const SocketWrapper = ({ component: Children, addNewMsgToActiveChat }: any) => {
+
+
+const SocketWrapper = ({ component: Children, addNewMsgToActiveChat, addNewChat }: any) => {
   const ws = new WebSocket('ws://localhost:8888');
 
   useEffect(() => {
@@ -40,23 +44,25 @@ const SocketWrapper = ({ component: Children, addNewMsgToActiveChat }: any) => {
 
     ws.onmessage = (e) => {
       const { data, type } = JSON.parse(e.data);
+      console.log('=====================================================');
+      console.log('CHAT SOCKET EVENT::::::>>> data:', data, 'type:', type);
+      console.log('=====================================================');
 
       switch (type) {
-        case 'ping': {
-
+        case SOCKET_TYPE.ping: {
           ws.send(JSON.stringify({ data: 'pong', type: 'pong' }));
-          console.log('CHAT SOCKET EVENT::::::>>> data:', data, 'type:', type);
-          
           break;
         }
-          
-          case 'out': 
-          case 'inc': 
-          case 'sys': 
-          case 'message': {
-            addNewMsgToActiveChat(data);
-            break;
-          }
+        case SOCKET_TYPE.out: 
+        case SOCKET_TYPE.inc: 
+        case SOCKET_TYPE.sys: 
+        case SOCKET_TYPE.message: {
+          addNewMsgToActiveChat(data);
+          break;
+        }
+        case SOCKET_TYPE.newChat: {
+          addNewChat(data);
+        }
         default:
           break;
       }
@@ -70,6 +76,7 @@ const SocketWrapper = ({ component: Children, addNewMsgToActiveChat }: any) => {
 
 const mapDispatchToProps = {
   addNewMsgToActiveChat,
+  addNewChat,
 };
 
 export default connect(null, mapDispatchToProps)(React.memo(SocketWrapper));

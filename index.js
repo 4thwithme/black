@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const config = require("config");
-const socket = require('./socket/socket');
+const { onConnectSocket } = require('./socket/socket');
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require('./routes/auth.route');
@@ -41,7 +41,7 @@ mongoose
     app.listen(port, () => {
       console.log(`Listening on port ${port}...`);
 
-      socket();
+      onConnectSocket();
     });
   })
   .catch(err => console.error(err));
