@@ -37,14 +37,9 @@ router.put('/', async (req, res) => {
 });
 
 router.delete('/', auth, async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const isLogouted = await User.logoutById(req.user._id);
 
-  if (user.isOnline) {
-    user.isOnline = false;
-    await user.save();
-  }
-
-  res.sendStatus(200);
+  res.sendStatus(isLogouted);
 });
 
 module.exports = router;

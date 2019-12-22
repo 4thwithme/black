@@ -4,16 +4,28 @@ const config = require("config");
 
 const Message = require('../models/Message.model');
 const Chat = require('../models/Chat.model');
+const { User } = require('../models/User.model');
 
 const { sendMsgToChat } =require('../utils/utils')
 const { SOCKET_TYPE } = require('../const/const');
+const { throttle } = require('../utils/utils');
 
 const socket = new WebSocket.Server({ port: 8888 });
 
 
-
 module.exports = {
   onConnectSocket: () => socket.on('connection', (ws, req) => {
+    ws.onclose = (closeEvent) => {
+      User.logoutById(closeEvent.connectedUserId);
+    };
+
+    const logout = async () => {
+      ws.close();
+      await User.logoutById(ws.connectedUserId);
+    };
+
+    const deboucedLogut = throttle(logout, 10000, false);
+
     ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
 
     if (req.headers.cookie) {
@@ -33,6 +45,7 @@ module.exports = {
 
           setTimeout(() => {
             ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
+            deboucedLogut();
           }, 5000);
           break;
         }
@@ -68,4 +81,4 @@ module.exports = {
       }
     }
   }
-}
+};

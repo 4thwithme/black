@@ -32,6 +32,22 @@ UserSchema.methods.generateAuthToken = function () {
   return token;
 };
 
+UserSchema.statics.logoutById = async function(userId) {
+  if (userId) {
+    const user = await this.findById(userId);
+
+    if (user.isOnline) {  
+      user.isOnline = false;
+      await user.save();
+      
+      console.log('user ' + userId + ' was disconnected');
+      return 200;
+    }
+  }
+
+  return 400;
+};
+
 const User = mongoose.model('User', UserSchema);
 
 //function to validate user 
