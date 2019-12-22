@@ -15,12 +15,16 @@
     width: 60px;
     border-radius: 50%;
     overflow: hidden;
+    border: solid 1px rgb(0, 167, 238);
     min-width: 60px;
+    position: relative;
+    z-index: 1;
 
     & img {
       object-fit: cover;
       height: 100%;
       width: 100%;
+      z-index: 1;
     }
   }
 

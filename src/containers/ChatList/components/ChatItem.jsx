@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import showTimelineDate from '../../../utils/convertDate'
 import setAvatar from '../../../utils/setAvatar';
 import './ChatItem.scss';
-
 import LazyLoadImage from '../../../components/LazyLoadImage/LazyLoadImage';
 
 

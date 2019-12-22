@@ -14,6 +14,7 @@ interface IProps {
   onClick?: () => void,
   spinnerStyles?: any,
   restProps?: any,
+  src: string,
 }
 
 const LazyLoadImage = (props: IProps) => {

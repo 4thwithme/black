@@ -7,6 +7,7 @@ import  showTimelineDate  from '../../utils/convertDate'
 
 import { IMessage, IUser } from '../../redux/types';
 import { AppState } from '../..';
+import LazyLoadImage from '../../components/LazyLoadImage/LazyLoadImage';
 
 interface IProps {
   message: IMessage,
@@ -31,7 +32,7 @@ const Msg = (props: IProps) => {
         data-msg-type={setMsgType()} 
         className="chat-timeline-list__msg-wrap">
         <div className="chat-timeline-list__ava-wrp">
-          <img src={setAvatar(props.user)} alt="user avatar" />
+          <LazyLoadImage src={setAvatar(props.user)} alt="user avatar" />
         </div>
 
         <div className="chat-timeline-list__info-block">
