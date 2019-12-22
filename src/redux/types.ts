@@ -6,6 +6,8 @@ export interface IAction {
 export interface IUserLogin {
   name: string,
   'x-dark-token': string,
+  settings?: any,
+  _id: string,
 };
 
 export interface IUser {

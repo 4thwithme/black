@@ -17,7 +17,7 @@ interface ISetState {
 
 interface ILogin {
   setCurrentWindow: (path: string) => void,
-  handleAuthLogin: (data: IUserLogin) => void,
+  handleAuthLogin: (name: string, pass: string) => void,
   history: History
 };
 
@@ -41,21 +41,12 @@ const Login = (props: ILogin) => {
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await API.loginUser(state.name, state.pass);
-    const data = res.data;
-
-    props.handleAuthLogin(data);
-
-    props.history.push('/')
+    props.handleAuthLogin(state.name, state.pass);
   };
-
-
-  console.log(props);
-
 
   return (
     <main className="login-wrapper">
-      <h1 className="login-heading" >authorize</h1>
+      {/* <h1 className="login-heading">sign in</h1> */}
 
       <form onSubmit={onSubmitHandler}>
         <input
@@ -74,7 +65,7 @@ const Login = (props: ILogin) => {
           required />
 
         <div className="controls">
-          <button type="submit" className="btn btn-primary">Log In</button>
+          <button type="submit" className="btn btn-primary btn-primary--wide">Log In</button>
         </div>
       </form>
     </main>

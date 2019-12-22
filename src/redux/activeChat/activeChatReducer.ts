@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 
 import API from "../../api/api";
+import LS from "../../utils/LS";
 
 import { IAction, INewMsg } from "../types";
 
@@ -17,7 +18,7 @@ export const setActiveChatId = (id: string) => (dispatch: Dispatch) => {
     payload: id
   });
 
-  localStorage.setItem('activeChatId', id);
+  LS.setItem('activeChatId', id);
 };
 
 export const getChatTimeline = (chatId: string) => async (dispatch: Dispatch) => {

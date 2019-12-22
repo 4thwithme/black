@@ -27,3 +27,22 @@ div, span, h1, h2, h3, h4, h5, h6, article, aside, main, button, input, ul, li, 
   outline: none;
   color: #bdbdbd;
 }
+
+.btn {
+  height: 40px;
+  width: 200px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: lowercase;
+  cursor: pointer;
+  
+  &.btn-primary {
+    background-color: #008686;
+    color: #fff;
+    
+    &--wide {
+      width: 100%;
+    }
+  }
+}

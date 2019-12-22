@@ -13,20 +13,27 @@ import MainPage from './Pages/MainPage/MainPage';
 
 interface IApp {
   activeWindow: string,
-  setCurrentWindow: (activeWindow: string) => void
+  setCurrentWindow: (activeWindow: string) => void,
+  isAuth: boolean,
 };
 
 const App = (props: IApp) => {
-  const { activeWindow } = props;
+  // const { activeWindow } = props;
 
-  const prevActiveWindow = usePrev(activeWindow);
+  // const prevActiveWindow = usePrev(activeWindow);
 
-  useEffect(() => {
-    if (activeWindow && prevActiveWindow !== activeWindow) {
-      window.location.href = activeWindow;
-      return;
+  // useEffect(() => {
+  //   if (activeWindow && prevActiveWindow !== activeWindow) {
+  //     window.location.href = activeWindow;
+  //     return;
+  //   }
+  // }, [prevActiveWindow, activeWindow]);
+
+  useEffect(()=> {
+    if (props.isAuth) {
+      window.location.href = '/';
     }
-  }, [prevActiveWindow, activeWindow]);
+  }, [props.isAuth]);
 
 
   return (
@@ -45,6 +52,7 @@ const App = (props: IApp) => {
 
 const mapStateToProps = (state: AppState) => ({
   activeWindow: state.activeWindow.path,
+  isAuth: state.auth.isAuth,
 });
 const mapDispatchToProps = {
   setCurrentWindow,

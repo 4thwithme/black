@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,7 +27,7 @@ const Searcher = ({classNamePrefix, setSearchState, setQuery, query}: IProps) =>
     if (query.length > 1) {
       throttledGetParticipantsByQuery(query);
     }
-  }, [query.length])
+  }, [query, query.length, throttledGetParticipantsByQuery])
 
   return (
     <div className={`${classNamePrefix}__searcher-wrap`} >

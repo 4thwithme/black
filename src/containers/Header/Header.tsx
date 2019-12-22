@@ -14,7 +14,9 @@ const Header = (props: IProps) => {
   const logoutHandler = async () => {
     await API.logoutUser();
 
-    props.handleAuthLogout();
+    if (window.confirm('ar u sure?')) {
+      props.handleAuthLogout();
+    }
   };
 
   return (
