@@ -34,6 +34,10 @@
       outline: none;
       color: $text-color;
       width: calc(100% - 44px);
+
+      &:focus {
+        border: 1px solid $btn-primary-color;
+      }
     }
 
     .controls {

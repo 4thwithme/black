@@ -1,13 +1,20 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, ReactType } from 'react';
 import { connect } from 'react-redux';
 
 import { addNewMsgToActiveChat } from '../../redux/activeChat/activeChatReducer';
 import { addNewChat } from '../../redux/chats/chatsReducer';
 import { SOCKET_TYPE } from '../../api/const';
+import { INewMsg, INewChat } from '../../redux/types';
 
 
+interface IProps {
+  addNewMsgToActiveChat: (data: INewMsg) => void,
+  addNewChat: (data: INewChat) => void,
+  component: ReactType,
+};
 
-const SocketWrapper = ({ component: Children, addNewMsgToActiveChat, addNewChat }: any) => {
+
+const SocketWrapper = ({ component: Children, addNewMsgToActiveChat, addNewChat }: IProps) => {
   const ws = new WebSocket('ws://localhost:8888');
 
   useEffect(() => {

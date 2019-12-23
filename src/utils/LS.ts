@@ -31,7 +31,7 @@ const authorizeUser = (user: IUserLogin) => {    //register user in LS if doesn'
   ls.setItem(`user_${userInfo._id}`, stringify({ user: userInfo, 'settings': settings }));
 };
 
-const setItem = (key: string, value: any) => {                  //set key - value to user_id 
+const setItem = <T>(key: string, value: T) => {                  //set key - value to user_id 
   if (!currentUserId) return;
 
   const userInfo = getUserStorage();

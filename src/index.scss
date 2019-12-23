@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -36,11 +38,18 @@ div, span, h1, h2, h3, h4, h5, h6, article, aside, main, button, input, ul, li, 
   font-size: 12px;
   text-transform: lowercase;
   cursor: pointer;
+
+  &:focus {
+    background-color: $btn-primary-color--hover;
+  }
   
   &.btn-primary {
-    background-color: #008686;
+    background-color: $btn-primary-color;
     color: #fff;
-    
+
+    &:hover, &:focus {
+      background-color: $btn-primary-color--hover;
+    }
     &--wide {
       width: 100%;
     }

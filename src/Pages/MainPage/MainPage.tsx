@@ -8,17 +8,14 @@ import { initApp } from '../../redux/auth/authReducer';
 import './MainPage.scss';
 
 import { AppState } from '../..';
-import { IUser } from '../../redux/types';
 
 interface IProps {
-  users: IUser[],
   isAuth: boolean,
-  activeChatId: string,
   initApp: () => void,
 };
 
 
-const MainPage = ({ initApp, isAuth }: any) => {
+const MainPage = ({ initApp, isAuth }: IProps) => {
   const prevAuthStatus = usePrev(isAuth);
 
   useEffect(() => {
@@ -39,8 +36,6 @@ const MainPage = ({ initApp, isAuth }: any) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  users: state.users,
-  activeChatId: state.activeChat.activeChatId,
   isAuth: state.auth.isAuth,
 });
 

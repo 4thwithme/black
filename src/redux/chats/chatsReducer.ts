@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { IAction } from "../types";
+import { IAction, INewChat } from "../types";
 import API from "../../api/api";
 import normalize from "../../utils/normalize";
 import parseLastInteraction from "../../utils/parseLastInteraction";

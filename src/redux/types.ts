@@ -49,3 +49,16 @@ export interface INewChat {
   chat: IChat,
   participantsObjects: IUser[],
 }
+
+export interface IDataItem<T> {
+  [key: string]: T; // id
+};
+
+export interface IEntities<T> {
+  [key: string]: IDataItem<T>;
+};
+
+export interface INormalizeResult<T> {
+  entities: IEntities<T>;
+  ids: T[];
+};

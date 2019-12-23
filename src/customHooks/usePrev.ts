@@ -1,7 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, MutableRefObject } from "react";
 
-export default (value: any) => {
-  const prev = useRef(value);
+export default <T>(value: T): T => {
+  const prev: MutableRefObject<T> = useRef(value);
 
   useEffect(() => {
     prev.current = value;

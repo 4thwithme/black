@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './clientConfig/api-config';
-import usePrev from './customHooks/usePrev';
 import { setCurrentWindow } from './redux/activeWindow/activeWindowReducer';
 
 import Login from './Pages/Login/Login';
@@ -18,17 +17,6 @@ interface IApp {
 };
 
 const App = (props: IApp) => {
-  // const { activeWindow } = props;
-
-  // const prevActiveWindow = usePrev(activeWindow);
-
-  // useEffect(() => {
-  //   if (activeWindow && prevActiveWindow !== activeWindow) {
-  //     window.location.href = activeWindow;
-  //     return;
-  //   }
-  // }, [prevActiveWindow, activeWindow]);
-
   useEffect(()=> {
     if (props.isAuth) {
       window.location.href = '/';
