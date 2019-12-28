@@ -8,6 +8,7 @@ import { initApp } from '../../redux/auth/authReducer';
 import './MainPage.scss';
 
 import { AppState } from '../..';
+import LS from '../../utils/LS';
 
 interface IProps {
   isAuth: boolean,
@@ -23,7 +24,14 @@ const MainPage = ({ initApp, isAuth }: IProps) => {
   }, [initApp]);
 
   useEffect(() => {
-    if (prevAuthStatus === false && isAuth) {
+    const user = LS.getItem('user');
+
+    if ((prevAuthStatus === false && isAuth) ||
+    !user) {
+      window.location.href = '/login';
+    }
+
+    if (!user) {
       window.location.href = '/login';
     }
   }, [isAuth]);

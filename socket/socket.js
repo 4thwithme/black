@@ -15,18 +15,20 @@ const socket = new WebSocket.Server({ port: 8888 });
 
 module.exports = {
   onConnectSocket: () => socket.on('connection', (ws, req) => {
-    ws.onclose = (closeEvent) => {
-      User.logoutById(closeEvent.connectedUserId);
-    };
-
     const logout = async () => {
-      ws.close();
+      clearInterval(pingPong);
+      console.log('CLOSSED', ws.connectedUserId);
+
       await User.logoutById(ws.connectedUserId);
+
+      ws.close();
     };
 
-    const deboucedLogut = throttle(logout, 10000, false);
+    const deboucedLogut = throttle(logout, 8000, false);
 
-    ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
+    const pingPong = setInterval(() => {
+      ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
+    }, 5000);
 
     if (req.headers.cookie) {
       const token =  req.headers.cookie.split('=')[1];
@@ -43,10 +45,7 @@ module.exports = {
         case SOCKET_TYPE.pong: {
           console.log(parsedData);
 
-          setTimeout(() => {
-            ws.send(JSON.stringify({ type: 'ping', data: 'ping' }));
-            deboucedLogut();
-          }, 5000);
+          deboucedLogut();
           break;
         }
 

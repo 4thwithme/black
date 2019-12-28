@@ -46,6 +46,8 @@
 
   &__chat-name {
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__last-msg {
@@ -85,7 +87,7 @@
     height: 20px;
     width: 20px;
     font-size: 11px;
-    color:#000;
+    color: #000;
     font-weight: bold;
     display: flex;
     align-items: center;

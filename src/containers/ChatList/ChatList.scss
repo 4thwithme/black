@@ -1,13 +1,14 @@
 .aside-chats {
-  height: 100vh;
+  height: calc(100vh - 106px);
   border-right: 1px solid rgb(41, 41, 41);
   min-width: 300px;
   max-width: 300px;
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  margin-top: 106px;
+  overflow: auto;
 
   .searcher {
-    &__searcher-wrap { 
+    &__searcher-wrap {
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -15,12 +16,20 @@
       border-bottom: solid 1px rgb(41, 41, 41);
       font-size: 14px;
       position: relative;
+      position: fixed;
+      top: 64px;
+      width: 296px;
+      background-color: rgb(15, 15, 15);
+      z-index: 55;
+      height: 34px;
+      border-right: 1px solid rgb(41, 41, 41);
     }
     &__input {
       background-color: transparent;
       border: solid 1px #333;
       border-radius: 4px;
-      padding: 8px 25px;
+      padding: 0 25px;
+      height: 34px;
       width: 100%;
       font-size: 16px;
     }
@@ -29,5 +38,10 @@
       right: 14px;
       top: 13px;
     }
+  }
+
+  .chat-list {
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 }

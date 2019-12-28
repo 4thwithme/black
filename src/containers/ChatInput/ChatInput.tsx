@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, MutableRefObject } from 'react';
 import { connect } from 'react-redux';
 
 import './ChatInput.scss';
@@ -14,7 +14,7 @@ interface IProps {
 const ChatInput = (props: IProps) => {
   const [msg, setMsg] = useState<string>('');
 
-  const inputRef: any = useRef();
+  const inputRef: MutableRefObject<any> = useRef();
 
   const onEnterHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' && e.shiftKey) {

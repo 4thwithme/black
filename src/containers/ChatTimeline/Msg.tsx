@@ -15,6 +15,10 @@ interface IProps {
   currentUser: IUser,
 };
 
+interface IOwnProps {
+  message: IMessage,
+};
+
 const Msg = (props: IProps) => {
   
   const setMsgType = () => {
@@ -23,8 +27,6 @@ const Msg = (props: IProps) => {
     }
     return 'inc';
   };
-
-
 
   return (
     <li key={props.message._id} className="chat-timeline-list__item">
@@ -48,7 +50,7 @@ const Msg = (props: IProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState, ownProps: any) => ({
+const mapStateToProps = (state: AppState, ownProps: IOwnProps) => ({
   user: getUsersForChat(state, ownProps.message.data.senderId),
   currentUser: state.auth.currentUser,
 });

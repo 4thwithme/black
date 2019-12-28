@@ -32,6 +32,7 @@ const ChatItem = ({ chat, setActiveChatId, currentUserId, ...props }) => {
 
   return (
     <li
+      data-isselected={props.item === props.activeChat}
       onClick={() => setActiveChatId(props.item)}
       className="chat-list-item">
       <div className="chat-list-item__ava-wrap">
@@ -73,6 +74,7 @@ const ChatItem = ({ chat, setActiveChatId, currentUserId, ...props }) => {
 
 const mapStateToProps = (state, ownProps) => ({
   chat: state.chats.entities[ownProps.item],
+  activeChat: state.activeChat.activeChatId,
   currentUserId: state.auth.currentUser._id,
 });
 

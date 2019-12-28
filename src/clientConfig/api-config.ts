@@ -26,5 +26,12 @@ axios.interceptors.response.use(
     return Promise.resolve(response);
   },
   error => {
-    return Promise.reject(error);
+    switch (error.response.status) {
+      case 666:
+        window.location.href = '/login';
+        break;
+    
+      default:
+        return Promise.reject(error);
+    }
   });

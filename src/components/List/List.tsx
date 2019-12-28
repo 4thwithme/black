@@ -6,6 +6,8 @@ interface IPropsList {
   listItems: any[],
   component: ReactType,
   listItemProps?: any,
+  loadMore?: (offset: number) => void,
+  listLoadPending?: boolean,
 };
 
 const List = (props: IPropsList) => {

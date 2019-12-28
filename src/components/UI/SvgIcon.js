@@ -8,5 +8,5 @@ const SvgIcon = ({ fill, height, width, className, icon }) => (
     <use xlinkHref={`${url}#${icon}`} />
   </svg>
 );
- 
+
 export default React.memo(SvgIcon);

@@ -1,5 +1,5 @@
 module.exports = {
-   sendMsgToChat: function(client, chatEntity, msgEntity, type) {
+  sendMsgToChat: function(client, chatEntity, msgEntity, type) {
     client.send(JSON.stringify({ 
       type, 
       data: {
@@ -8,6 +8,7 @@ module.exports = {
       } 
     }));
   },
+  
   debounce: function(func, ms, initialState = false) {
     let isCan = initialState;
   
@@ -20,31 +21,31 @@ module.exports = {
     };
   },
 
-  throttle: function(func, ms, initialState = false) {
-    let isCan = initialState;
-    let delayedContext;
-    let delayedArguments;
+  throttle: function (func, ms) {
+    let isThrottled = true;
+    let savedArgs;
+    let savedThis;
   
-    return function wrapper(...args) {
-      const _self = wrapper;
-  
-      if (!isCan) {
-        delayedContext = _self;
-        delayedArguments = args;
+    function wrapper() {
+      if (isThrottled) { 
+        savedArgs = arguments;
+        savedThis = this;
         return;
       }
   
-      func.apply(_self, args);
-      isCan = false;
+      func.apply(this, arguments);
   
-      setTimeout(() => {
-        isCan = true;
+      isThrottled = true;
   
-        if (delayedArguments) {
-          wrapper.apply(delayedContext, delayedArguments);
-          delayedArguments = delayedContext = null;
+      setTimeout(function() {
+        isThrottled = false; 
+        if (savedArgs) {
+          wrapper.apply(savedThis, savedArgs);
+          savedArgs = savedThis = null;
         }
       }, ms);
-    };
+    }
+  
+    return wrapper;
   }
 }
