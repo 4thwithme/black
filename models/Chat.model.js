@@ -1,23 +1,22 @@
-const mongoose = require('mongoose');
-const { CHAT_TYPE, RANDOM_NAME, RANDOM_PROP } = require('../const/const');
-
+const mongoose = require("mongoose");
+const { CHAT_TYPE, RANDOM_NAME, RANDOM_PROP } = require("../const/const");
 
 const ChatSchema = mongoose.Schema({
   participants: {
     type: Array,
     required: true,
     minlength: 1,
-    maxlength: 50,
+    maxlength: 50
   },
   ava: {
     type: String,
     required: true,
-    default: "",
+    default: ""
   },
   unreadCount: {
     required: true,
     type: Number,
-    default: 0,
+    default: 0
   },
   lastInteraction: {
     type: String,
@@ -27,30 +26,40 @@ const ChatSchema = mongoose.Schema({
   chatName: {
     required: true,
     type: String,
-    default: `${RANDOM_PROP[(Math.random() * 10).toFixed(0)]} ${RANDOM_NAME[(Math.random() * 10).toFixed(0)]}`
+    default: `${RANDOM_PROP[(Math.random() * 10).toFixed(0)]} ${
+      RANDOM_NAME[(Math.random() * 10).toFixed(0)]
+    }`
   },
   chatType: {
     required: true,
     type: Number,
     default: CHAT_TYPE.dialog
-  },
+  }
 });
 
 ChatSchema.statics.updateLastInteraction = function(chatId, msg) {
   return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msg }, { new: true });
 };
 
-ChatSchema.statics.createNewChat = function(participants, type) {
-  return this.collection.insertOne({
-    participants: participants,
-    chatName: 'DialogName',
-    chatType: type,
-    ava: "",
-    unreadCount: 0,
-    lastInteraction: "",
-  });
+ChatSchema.statics.createNewChat = async function(participants, type) {
+  const sortedParticipants = participants.sort();
+
+  const arr = await this.find({ participants: sortedParticipants });
+
+  if (arr.length) {
+    return arr[0];
+  } else {
+    return this.collection.insertOne({
+      participants: sortedParticipants,
+      chatName: "DialogName",
+      chatType: type,
+      ava: "",
+      unreadCount: 0,
+      lastInteraction: ""
+    });
+  }
 };
 
-const Chat = mongoose.model('Chat', ChatSchema);
+const Chat = mongoose.model("Chat", ChatSchema);
 
 module.exports = Chat;

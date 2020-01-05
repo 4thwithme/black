@@ -18,13 +18,7 @@ router.get("/", auth, async (req, res) => {
 
 router.get("/search", auth, async (req, res) => {
   if (req.query.q && req.query.q.length) {
-    // const usersByQuery = await User.find({ name: { $regex: req.query.q, $options: "i" } }).select(
-    //   "-password"
-    // );
-
     const usersByQuery = await User.searchUsers(req.query.q, req.query.limit, req.query.offset);
-
-    console.log(usersByQuery);
 
     const users = usersByQuery.filter((user) => user._id.toString() !== req.user._id);
 

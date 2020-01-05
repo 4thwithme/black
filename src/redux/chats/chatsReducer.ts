@@ -7,14 +7,13 @@ import parseLastInteraction from "../../utils/parseLastInteraction";
 import { ADD_NEW_MSG } from "../activeChat/activeChatReducer";
 import { GET_ALL_USERS } from "../users/userReducer";
 
-export const GET_ALL_CHATS = 'GET_ALL_CHATS';
-export const ADD_NEW_CHAT = 'ADD_NEW_CHAT';
+export const GET_ALL_CHATS = "GET_ALL_CHATS";
+export const ADD_NEW_CHAT = "ADD_NEW_CHAT";
 
 interface IinitState {
-  entities: any,
-  ids: string[]
-};
-
+  entities: any;
+  ids: string[];
+}
 
 export const getAllChats = () => async (dispatch: Dispatch) => {
   const res = await API.getAllChats();
@@ -23,16 +22,16 @@ export const getAllChats = () => async (dispatch: Dispatch) => {
 
   dispatch({
     type: GET_ALL_CHATS,
-    payload: parseLastInteraction(normalize(chats)),
+    payload: parseLastInteraction(normalize(chats))
   });
 };
 
 export const addNewChat = (data: any) => (dispatch: Dispatch) => {
   dispatch({
-    type: ADD_NEW_CHAT, 
+    type: ADD_NEW_CHAT,
     payload: {
       chat: normalize([data.chat]),
-      users: normalize(data.participantsObjects),
+      users: normalize(data.participantsObjects)
     }
   });
 };
@@ -48,8 +47,8 @@ export default (state: IinitState = initialState, { type, payload }: IAction) =>
       return {
         ...state,
         entities: payload.entities,
-        ids: payload.ids,
-      }
+        ids: payload.ids
+      };
     }
 
     case ADD_NEW_CHAT: {
@@ -57,31 +56,33 @@ export default (state: IinitState = initialState, { type, payload }: IAction) =>
         ...payload.chat.entities[payload.chat.ids],
         users: payload.users
       };
-      
 
       return {
         ...state,
-        entities: {...state.entities, ...updatedChat},
-        ids: [...payload.chat.ids, ...state.ids],
-      }
+        entities: { ...state.entities, updatedChat },
+        ids: [...payload.chat.ids, ...state.ids]
+      };
     }
 
     case ADD_NEW_MSG: {
-      const updatedChat = {...payload.chat, lastInteraction: JSON.parse(payload.chat.lastInteraction)};
-      
+      const updatedChat = {
+        ...payload.chat,
+        lastInteraction: JSON.parse(payload.chat.lastInteraction)
+      };
+
       return {
         ...state,
         entities: {
           ...state.entities,
           [payload.chat._id]: updatedChat
         }
-      }
+      };
     }
 
     case GET_ALL_USERS: {
       const prevEntites = state.entities;
-      
-      state.ids.forEach(chatId => {
+
+      state.ids.forEach((chatId) => {
         const users: any = {};
 
         state.entities[chatId].participants.forEach((userId: string) => {
@@ -90,17 +91,17 @@ export default (state: IinitState = initialState, { type, payload }: IAction) =>
 
         prevEntites[chatId] = {
           ...prevEntites[chatId],
-          users,
-        }
+          users
+        };
       });
 
       return {
         ...state,
-        entities: prevEntites,
-      }
+        entities: prevEntites
+      };
     }
 
     default:
       return state;
   }
-}
+};

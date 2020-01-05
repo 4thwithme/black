@@ -1,21 +1,20 @@
-import React, { useEffect, useCallback, ReactType } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useCallback, ReactType } from "react";
+import { connect } from "react-redux";
 
-import { addNewMsgToActiveChat } from '../../redux/activeChat/activeChatReducer';
-import { addNewChat } from '../../redux/chats/chatsReducer';
-import { SOCKET_TYPE } from '../../api/const';
-import { INewMsg, INewChat } from '../../redux/types';
-
+import { addNewMsgToActiveChat } from "../../redux/activeChat/activeChatReducer";
+import { addNewChat } from "../../redux/chats/chatsReducer";
+import { SOCKET_TYPE } from "../../api/const";
+import { INewMsg, INewChat } from "../../redux/types";
 
 interface IProps {
-  addNewMsgToActiveChat: (data: INewMsg) => void,
-  addNewChat: (data: INewChat) => void,
-  component: ReactType,
-};
+  addNewMsgToActiveChat: (data: INewMsg) => void;
+  addNewChat: (data: INewChat) => void;
+  component: ReactType;
+}
 
-
-const SocketWrapper = ({ component: Children, addNewMsgToActiveChat, addNewChat }: IProps) => {
-  const ws = new WebSocket('ws://localhost:8888');
+const SocketWrapper = (props: IProps) => {
+  const { component: Children, addNewMsgToActiveChat, addNewChat } = props;
+  const ws = new WebSocket("ws://localhost:8888");
 
   useEffect(() => {
     setupSocket();
@@ -25,44 +24,49 @@ const SocketWrapper = ({ component: Children, addNewMsgToActiveChat, addNewChat 
     };
   }, [ws]);
 
-  const sendMsg = useCallback((chatId: string, msgForSend: string, senderId: string) => {
-    ws.send(JSON.stringify({
-      data: {
-        body: msgForSend,
-        chatId,
-        senderId,
-      },
-      type: 'message',
-    }));
-  }, [ws]);
+  const sendMsg = useCallback(
+    (chatId: string, msgForSend: string, senderId: string) => {
+      ws.send(
+        JSON.stringify({
+          data: {
+            body: msgForSend,
+            chatId,
+            senderId
+          },
+          type: "message"
+        })
+      );
+    },
+    [ws]
+  );
 
   const setupSocket = () => {
     ws.onopen = () => {
-      console.log('Socket connected!)');
+      console.log("Socket connected!)");
     };
 
     ws.onclose = () => {
-      console.log('Socket disconnected!(');
+      console.log("Socket disconnected!(");
     };
 
     ws.onerror = (err) => {
-      console.log('Socket error: ', err);
+      console.log("Socket error: ", err);
     };
 
     ws.onmessage = (e) => {
       const { data, type } = JSON.parse(e.data);
-      console.log('=====================================================');
-      console.log('CHAT SOCKET EVENT::::::>>> data:', data, 'type:', type);
-      console.log('=====================================================');
+      console.log("=====================================================");
+      console.log("CHAT SOCKET EVENT::::::>>> data:", data, "type:", type);
+      console.log("=====================================================");
 
       switch (type) {
         case SOCKET_TYPE.ping: {
-          ws.send(JSON.stringify({ data: 'pong', type: 'pong' }));
+          ws.send(JSON.stringify({ data: "pong", type: "pong" }));
           break;
         }
-        case SOCKET_TYPE.out: 
-        case SOCKET_TYPE.inc: 
-        case SOCKET_TYPE.sys: 
+        case SOCKET_TYPE.out:
+        case SOCKET_TYPE.inc:
+        case SOCKET_TYPE.sys:
         case SOCKET_TYPE.message: {
           addNewMsgToActiveChat(data);
           break;
@@ -73,17 +77,15 @@ const SocketWrapper = ({ component: Children, addNewMsgToActiveChat, addNewChat 
         default:
           break;
       }
-    }
-  }
+    };
+  };
 
-  return (
-    <Children sendMsg={sendMsg} />
-  );
+  return <Children sendMsg={sendMsg} />;
 };
 
 const mapDispatchToProps = {
   addNewMsgToActiveChat,
-  addNewChat,
+  addNewChat
 };
 
 export default connect(null, mapDispatchToProps)(React.memo(SocketWrapper));

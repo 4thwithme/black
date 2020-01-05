@@ -7,9 +7,9 @@ import { setActiveChatId } from "../activeChat/activeChatReducer";
 import { Dispatch } from "redux";
 import { IAction } from "../types";
 
-export const AUTH_LOGIN = 'AUTH_LOGIN';
-export const CURRENT_USER_UPDATE = 'CURRENT_USER_UPDATE';
-export const SET_IS_AUTH = 'SET_IS_AUTH';
+export const AUTH_LOGIN = "AUTH_LOGIN";
+export const CURRENT_USER_UPDATE = "CURRENT_USER_UPDATE";
+export const SET_IS_AUTH = "SET_IS_AUTH";
 
 export const handleAuthLogin = (name: string, pass: string) => async (dispatch: Dispatch) => {
   const res = await API.loginUser(name, pass);
@@ -18,7 +18,7 @@ export const handleAuthLogin = (name: string, pass: string) => async (dispatch: 
   if (currentUser) {
     const { "x-dark-token": token } = currentUser;
 
-    sessionStorage.setItem('x-dark-token', token);
+    sessionStorage.setItem("x-dark-token", token);
 
     delete currentUser["x-dark-token"];
 
@@ -29,27 +29,27 @@ export const handleAuthLogin = (name: string, pass: string) => async (dispatch: 
 };
 
 export const currentUserUpdate = () => (dispatch: Dispatch) => {
-  const user = LS.getItem('user');
+  const user = LS.getItem("user");
 
   dispatch({ type: CURRENT_USER_UPDATE, payload: user });
 };
 
 export const handleAuthLogout = () => (dispatch: Dispatch) => {
-  sessionStorage.removeItem('x-dark-token');
-  window.location.href = '/login';
-  LS.deleteItem('user');
+  sessionStorage.removeItem("x-dark-token");
+  window.location.href = "/login";
+  LS.deleteItem("user");
 
   dispatch({ type: AUTH_LOGIN });
 };
 
 export const initApp = () => (dispatch: any) => {
-  console.log('INIT APP STARTED');
-  const activeChatId = LS.getItem('activeChatId');
+  console.log("INIT APP STARTED");
+  const activeChatId = LS.getItem("activeChatId");
 
   dispatch(currentUserUpdate());
+  dispatch(getAllUsers());
 
   dispatch(getAllChats());
-  dispatch(getAllUsers());
 
   if (activeChatId) {
     dispatch(setActiveChatId(activeChatId));
@@ -58,7 +58,7 @@ export const initApp = () => (dispatch: any) => {
 
 const initialState = {
   currentUser: null,
-  isAuth: false,
+  isAuth: false
 };
 
 export default (state = initialState, { type, payload }: IAction) => {
@@ -66,23 +66,23 @@ export default (state = initialState, { type, payload }: IAction) => {
     case AUTH_LOGIN: {
       return {
         ...state,
-        currentUser: payload,
-      }
+        currentUser: payload
+      };
     }
     case SET_IS_AUTH: {
       return {
         ...state,
-        isAuth: payload,
-      }
+        isAuth: payload
+      };
     }
     case CURRENT_USER_UPDATE: {
       return {
         ...state,
-        currentUser: payload,
-      }
+        currentUser: payload
+      };
     }
 
     default:
       return state;
   }
-}
+};
