@@ -64,19 +64,38 @@ module.exports = {
               date: Date.now()
             });
 
+            const allUsers = await User.find({});
+
+            const getUsersForChat = (participants) => {
+              const entites = {};
+
+              participants.forEach((id) => {
+                entites[id] = allUsers.find((user) => String(user._id) === id);
+              });
+              return entites;
+            };
+
             const updatedChat = await Chat.updateLastInteraction(
               parsedData.data.chatId,
               JSON.stringify(newChatMsg.ops[0])
             );
 
+            const chatWithParticipants = {
+              ...updatedChat._doc,
+              users: {
+                ids: updatedChat.participants,
+                entities: getUsersForChat(updatedChat.participants)
+              }
+            };
+
             for (const client of socket.clients) {
               if (client.connectedUserId === parsedData.data.senderId) {
-                sendMsgToChat(client, updatedChat, newChatMsg.ops[0], "out");
+                sendMsgToChat(client, chatWithParticipants, newChatMsg.ops[0], "out");
                 continue;
               }
 
               if (updatedChat.participants.includes(client.connectedUserId)) {
-                sendMsgToChat(client, updatedChat, newChatMsg.ops[0], "inc");
+                sendMsgToChat(client, chatWithParticipants, newChatMsg.ops[0], "inc");
                 continue;
               }
             }

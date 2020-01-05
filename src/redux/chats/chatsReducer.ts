@@ -53,13 +53,13 @@ export default (state: IinitState = initialState, { type, payload }: IAction) =>
 
     case ADD_NEW_CHAT: {
       const updatedChat = {
-        ...payload.chat.entities[payload.chat.ids],
+        ...payload.chat.entities[payload.chat.ids[0]],
         users: payload.users
       };
 
       return {
         ...state,
-        entities: { ...state.entities, updatedChat },
+        entities: { ...state.entities, [payload.chat.ids[0]]: updatedChat },
         ids: [...payload.chat.ids, ...state.ids]
       };
     }
