@@ -8,36 +8,40 @@ const { User } = require("../models/User.model");
 
 const { sendMsgToChat } = require("../utils/utils");
 const { SOCKET_TYPE } = require("../const/const");
-const { throttle } = require("../utils/utils");
 
 const socket = new WebSocket.Server({ port: 8888 });
 
+function heartbeat(ws) {
+  ws.isAlive = true;
+}
+
+setInterval(function() {
+  socket.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) {
+      return ws.terminate();
+    }
+
+    ws.isAlive = false;
+    ws.send(JSON.stringify({ type: "ping", data: "ping" }));
+  });
+}, 2000);
+
 module.exports = {
   onConnectSocket: () =>
-    socket.on("connection", (ws, req) => {
-      const pingPong = setInterval(() => {
-        ws.send(JSON.stringify({ type: "ping", data: "ping" }));
-      }, 5000);
-
-      const logout = async () => {
-        clearInterval(pingPong);
-        console.log("CLOSSED", ws.connectedUserId);
-
-        await User.logoutById(ws.connectedUserId);
-
-        ws.close();
-      };
-
-      const deboucedLogut = throttle(logout, 6000, false);
-
+    socket.on("connection", async (ws, req) => {
       if (req.headers.cookie) {
         const token = req.headers.cookie.split("=")[1];
         const decoded = jwt.verify(token, config.get("myprivatekey"));
         ws.connectedUserId = decoded._id;
       }
 
+      ws.isAlive = true;
+      await User.reloginForReload(ws.connectedUserId);
+
       ws.onclose = () => {
         console.log("socket stoped and logouted user");
+        ws.isAlive = false;
+
         User.logoutById(ws.connectedUserId);
       };
 
@@ -49,8 +53,8 @@ module.exports = {
         switch (payloadType) {
           case SOCKET_TYPE.pong: {
             console.log(parsedData);
+            heartbeat(ws);
 
-            deboucedLogut();
             break;
           }
 

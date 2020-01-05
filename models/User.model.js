@@ -56,6 +56,20 @@ UserSchema.statics.logoutById = async function(userId) {
   return 400;
 };
 
+UserSchema.statics.reloginForReload = async function(userId) {
+  if (userId) {
+    const user = await this.findById(userId);
+
+    if (!user.isOnline) {
+      user.isOnline = true;
+      await user.save();
+
+      console.log("user " + userId + " was reconected");
+      return 200;
+    }
+  }
+};
+
 const User = mongoose.model("User", UserSchema);
 
 //function to validate user
