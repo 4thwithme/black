@@ -28,7 +28,7 @@ router.get("/", auth, async (req, res) => {
     const chats = [];
 
     const allUsers = await User.find({});
-    const allChats = await Chat.find({});
+    const allChats = await Chat.find({}).sort({ date: -1 });
 
     const user = allUsers.find((user) => String(user._id) === req.user._id);
     const chatsIds = user.chats;

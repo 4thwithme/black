@@ -69,13 +69,15 @@ export default (state: IinitState = initialState, { type, payload }: IAction) =>
         ...payload.chat,
         lastInteraction: JSON.parse(payload.chat.lastInteraction)
       };
+      const updatedIds = state.ids.filter((id) => id !== payload.chat._id);
 
       return {
         ...state,
         entities: {
           ...state.entities,
           [payload.chat._id]: updatedChat
-        }
+        },
+        ids: [payload.chat._id, ...updatedIds]
       };
     }
 

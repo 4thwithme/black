@@ -34,11 +34,16 @@ const ChatSchema = mongoose.Schema({
     required: true,
     type: Number,
     default: CHAT_TYPE.dialog
+  },
+  date: {
+    required: true,
+    type: Number,
+    default: 0
   }
 });
 
-ChatSchema.statics.updateLastInteraction = function(chatId, msg) {
-  return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msg }, { new: true });
+ChatSchema.statics.updateLastInteraction = function(chatId, msg, date) {
+  return this.findOneAndUpdate({ _id: chatId }, { lastInteraction: msg, date }, { new: true });
 };
 
 ChatSchema.statics.createNewChat = async function(participants, type) {

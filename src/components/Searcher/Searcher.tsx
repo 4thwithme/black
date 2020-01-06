@@ -16,26 +16,10 @@ interface IProps {
 const Searcher = (props: IProps) => {
   const { classNamePrefix, setQuery } = props;
 
-  // const throttledGetParticipantsByQuery = useCallback(
-  //   throttle(
-  //     (query, offset) =>
-  //       API.getParticipantsByQuery(query, 20, offset)
-  //         .then((res) => setSearchState(res.data))
-  //         .catch(console.error),
-  //     400
-  //   ),
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   if (query.length > 1) {
-  //     throttledGetParticipantsByQuery(query, offset);
-  //   }
-  // }, [query, query.length, throttledGetParticipantsByQuery]);
-
   return (
     <div className={`${classNamePrefix}__searcher-wrap`}>
       <input
+        value={props.query}
         type='text'
         className={`${classNamePrefix}__input`}
         onChange={(e) => setQuery(e.target.value)}

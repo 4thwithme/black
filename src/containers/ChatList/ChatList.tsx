@@ -31,12 +31,6 @@ const ChatList = ({ chatsIds, ...props }: IProps) => {
 
   const asideRef: MutableRefObject<any> = useRef();
 
-  useEffect(() => {
-    setIds(chatsIds);
-  }, [chatsIds]);
-
-  const memorizedSetActiveChatId = useCallback((id: string) => props.setActiveChatId(id), []);
-
   const throttledGetParticipantsByQuery = useCallback(
     throttle(
       (query, offset) =>
@@ -48,6 +42,10 @@ const ChatList = ({ chatsIds, ...props }: IProps) => {
     []
   );
 
+  useEffect(() => {
+    setIds(chatsIds);
+  }, [chatsIds]);
+
   useEffect(() => setPending(false), [searchState.length]);
 
   useEffect(() => {
@@ -55,6 +53,8 @@ const ChatList = ({ chatsIds, ...props }: IProps) => {
       throttledGetParticipantsByQuery(query);
     }
   }, [query, query.length, throttledGetParticipantsByQuery]);
+
+  const memorizedSetActiveChatId = useCallback((id: string) => props.setActiveChatId(id), []);
 
   const handleScroll = () => {
     console.log(
@@ -93,9 +93,16 @@ const ChatList = ({ chatsIds, ...props }: IProps) => {
       <List
         listItems={query.length ? searchState : ids}
         component={query.length ? UserItem : ChatItem}
-        listItemProps={{
-          setActiveChatId: memorizedSetActiveChatId
-        }}
+        listItemProps={
+          query.length
+            ? {
+                setSearchState: setSearchState,
+                setQuery: setQuery
+              }
+            : {
+                setActiveChatId: memorizedSetActiveChatId
+              }
+        }
         className='chat-list'
       />
     </aside>

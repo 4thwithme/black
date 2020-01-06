@@ -77,7 +77,8 @@ module.exports = {
 
             const updatedChat = await Chat.updateLastInteraction(
               parsedData.data.chatId,
-              JSON.stringify(newChatMsg.ops[0])
+              JSON.stringify(newChatMsg.ops[0]),
+              newChatMsg.ops[0].date
             );
 
             const chatWithParticipants = {

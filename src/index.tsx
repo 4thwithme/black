@@ -4,11 +4,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.scss";
 
-import {
-  createStore,
-  applyMiddleware
-  //  compose
-} from "redux";
+import { createStore, applyMiddleware } from "redux";
 
 import thunk from "redux-thunk";
 import logger from "redux-logger";
@@ -16,7 +12,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import rootReducer from "./redux/rootReducer";
 
-// const store = createStore(rootReducer, compose(applyMiddleware(thunk, logger)));
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk, logger)));
 
 export type AppState = ReturnType<typeof rootReducer>;
