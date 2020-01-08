@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .login-wrapper {
   height: 100vh;
@@ -7,7 +7,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 
   h1.login-heading {
     font-size: 44px;
@@ -23,6 +22,43 @@
     box-shadow: $box-shadow-block;
     max-width: 298px;
     padding: 10px;
+    position: relative;
+
+    .img-wrap {
+      border-radius: 50%;
+      overflow: hidden;
+      width: 90px;
+      height: 90px;
+      border: $border-style-normal;
+      display: flex;
+      position: absolute;
+      left: calc(50% - 45px);
+      top: -75px;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    #file-input {
+      opacity: 0;
+      height: 0;
+      width: 0;
+      visibility: hidden;
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
+
+    .login-error {
+      position: absolute;
+      font-size: 9px;
+      margin-top: -9px;
+      color: red;
+    }
 
     input {
       text-transform: lowercase;
@@ -34,6 +70,7 @@
       outline: none;
       color: $text-color;
       width: calc(100% - 44px);
+      position: relative;
 
       &:focus {
         border: 1px solid $btn-primary-color;
@@ -46,4 +83,3 @@
     }
   }
 }
-
