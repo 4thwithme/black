@@ -6,6 +6,9 @@ const config: AxiosRequestConfig | undefined = {
 
 const loginUser = (name: string, pass: string) => axios.put("auth", { name, password: pass });
 
+const signUpUser = (name: string, pass: string, ava: File) =>
+  axios.put("users/create", { name, pass, ava });
+
 const logoutUser = () => axios.delete("auth", config);
 
 const getAllUsers = () => axios.get("users", config);
@@ -32,5 +35,6 @@ export default {
   getAllChats,
   getChatTimeline,
   getParticipantsByQuery,
-  startChatByUserId
+  startChatByUserId,
+  signUpUser
 };

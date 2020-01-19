@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Form, Field } from "react-final-form";
 
 import { setUserAva } from "../../utils/setAvatar";
+import API from "../../api/api";
 
-const SignIn = () => {
+const SignUp = () => {
   const [photo, setPhoto] = useState({
-    file: null,
-    url: null
+    file: "",
+    url: ""
   });
 
   const handleOnChange = (e) => {
@@ -15,7 +16,7 @@ const SignIn = () => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setPhoto({ file, url: URL.createObjectURL(file) });
+      setPhoto({ file: reader.result, url: URL.createObjectURL(file) });
     };
 
     if (file) {
@@ -24,13 +25,12 @@ const SignIn = () => {
   };
 
   const onSubmit = (e) => {
-    const userInfo = {
-      name: e.name,
-      pass: e.pass,
-      ava: photo.file
-    };
-
-    console.log(userInfo);
+    console.log(e.name, e.pass, photo, "RRRRRRRRRRRRR");
+    API.signUpUser(e.name, e.pass, photo.file)
+      .then(() => {
+        console.log("registered");
+      })
+      .catch(console.error);
   };
 
   return (
@@ -139,4 +139,4 @@ const validate = ({ name, pass, pass2 }) => {
   return err;
 };
 
-export default SignIn;
+export default SignUp;

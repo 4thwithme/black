@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
 app.use(cookieParser());
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ limit: "50mb", extended: false }));
 app.use(express.json());
 
 app.use("/api/users", usersRoute);

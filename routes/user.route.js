@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
+const fs = require("fs");
 const Chat = require("../models/Chat.model");
 
 const auth = require("../middleware/auth");
@@ -33,30 +34,48 @@ router.get("/current", auth, async (req, res) => {
   res.send(user);
 });
 
-router.post("/create", async (req, res) => {
+router.put("/create", async (req, res) => {
   const { error } = validate(req.body);
+
   if (error) return res.status(400).send(error.details[0].message);
 
   const user = await User.findOne({ name: req.body.name });
   if (user) return res.status(400).send("User already registered.");
 
-  const userRes = await User.collection.insertOne({
-    name: req.body.name,
-    password: await bcrypt.hash(req.body.password, 10),
-    isOnline: false,
-    ava: ""
-  });
+  if (req.body.ava.length) {
+    console.log(req.body.ava);
 
-  const chatRes = await Chat.collection.insertOne({
-    participants: [userRes.insertedId],
-    chatName: "Saved messages",
-    chatType: CHAT_TYPE.saved,
-    ava: "",
-    unreadCount: 0,
-    lastInteraction: ""
-  });
+    const base64Data = req.body.ava.replace(/^data:image\/jpeg;base64,/, "");
 
-  await User.findOneAndUpdate({ _id: userRes.insertedId }, { chats: [chatRes.insertedId] });
+    console.log(base64Data, "\n", __dirname, __filename);
+
+    fs.writeFile(
+      __dirname + "/../localStorage/" + Date.now() + Math.random() + ".jpeg",
+      base64Data,
+      "base64",
+      (err) => {
+        console.error(err);
+      }
+    );
+  } else {
+    const userRes = await User.collection.insertOne({
+      name: req.body.name,
+      password: await bcrypt.hash(req.body.pass, 10),
+      isOnline: false,
+      ava: ""
+    });
+
+    const chatRes = await Chat.collection.insertOne({
+      participants: [userRes.insertedId],
+      chatName: "Saved messages",
+      chatType: CHAT_TYPE.saved,
+      ava: "",
+      unreadCount: 0,
+      lastInteraction: ""
+    });
+
+    await User.findOneAndUpdate({ _id: userRes.insertedId }, { chats: [chatRes.insertedId] });
+  }
 
   res.sendStatus(200);
 });

@@ -7,7 +7,7 @@ import { setCurrentWindow } from "./redux/activeWindow/activeWindowReducer";
 
 import Login from "./Pages/Login/Login";
 import MainPage from "./Pages/MainPage/MainPage";
-import SignIn from "./Pages/SignIn/SignIn";
+import SignUp from "./Pages/SignUp/SignUp";
 
 import { AppState } from ".";
 
@@ -30,7 +30,7 @@ const App = (props: IApp) => {
         <Switch>
           <Route path='/login' component={Login} />
 
-          <Route path='/sign-in' component={SignIn} />
+          <Route path='/sign-up' component={SignUp} />
 
           <Route exact path='/' component={MainPage} />
         </Switch>

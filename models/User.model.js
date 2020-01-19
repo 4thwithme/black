@@ -79,10 +79,11 @@ const validateUser = (user) => {
       .min(3)
       .max(50)
       .required(),
-    password: Joi.string()
+    pass: Joi.string()
       .min(3)
       .max(255)
-      .required()
+      .required(),
+    ava: Joi.binary()
   };
 
   return Joi.validate(user, schema);
