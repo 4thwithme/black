@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { CHAT_TYPE, RANDOM_NAME, RANDOM_PROP } = require("../const/const");
+const { CHAT_TYPE } = require("../const/const");
 
-const ChatSchema = mongoose.Schema({
+const ChatSchema = new mongoose.Schema({
   participants: {
     type: Array,
     required: true,
@@ -10,33 +10,28 @@ const ChatSchema = mongoose.Schema({
   },
   ava: {
     type: String,
-    required: true,
     default: ""
   },
   unreadCount: {
-    required: true,
     type: Number,
     default: 0
   },
   lastInteraction: {
     type: String,
-    required: true,
     default: "last interaction reference"
   },
   chatName: {
     required: true,
-    type: String,
-    default: `${RANDOM_PROP[(Math.random() * 10).toFixed(0)]} ${
-      RANDOM_NAME[(Math.random() * 10).toFixed(0)]
-    }`
+    type: String
+    // default: `${RANDOM_PROP[(Math.random() * 10).toFixed(0)]} ${
+    //   RANDOM_NAME[(Math.random() * 10).toFixed(0)]
+    // }`
   },
   chatType: {
-    required: true,
     type: Number,
     default: CHAT_TYPE.dialog
   },
   date: {
-    required: true,
     type: Number,
     default: 0
   }

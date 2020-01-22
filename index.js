@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const config = require("config");
 const { onConnectSocket } = require("./socket/socket");
+const cloudinary = require("cloudinary").v2;
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
@@ -24,8 +25,8 @@ app.use((req, res, next) => {
 
 app.use(cookieParser());
 
-app.use(express.urlencoded({ limit: "50mb", extended: false }));
-app.use(express.json());
+app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+app.use(express.json({ limit: "50mb" }));
 
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRouter);
@@ -43,6 +44,12 @@ mongoose
     }
     app.listen(port, () => {
       console.log(`Listening on port ${port}...`);
+
+      cloudinary.config({
+        cloud_name: "dy0mga9td",
+        api_key: "633915665754871",
+        api_secret: "9mZD9yNLlkFkY5OEnqCtU5pHTEA"
+      });
 
       onConnectSocket();
     });

@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 50
   },
-  password: {
+  pass: {
     type: String,
     required: true,
     minlength: 3,
@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  ava: String,
   //give different access rights if admin or not
   isAdmin: Boolean,
   chats: Array
@@ -83,7 +84,7 @@ const validateUser = (user) => {
       .min(3)
       .max(255)
       .required(),
-    ava: Joi.binary()
+    ava: Joi.binary() || ""
   };
 
   return Joi.validate(user, schema);

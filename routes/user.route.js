@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const fs = require("fs");
 const Chat = require("../models/Chat.model");
+const cloudinary = require("cloudinary").v2;
 
 const auth = require("../middleware/auth");
 const { User, validate } = require("../models/User.model");
@@ -42,41 +43,72 @@ router.put("/create", async (req, res) => {
   const user = await User.findOne({ name: req.body.name });
   if (user) return res.status(400).send("User already registered.");
 
-  if (req.body.ava.length) {
-    console.log(req.body.ava);
+  const userData = {
+    name: req.body.name,
+    pass: await bcrypt.hash(req.body.pass, 10),
+    ava: req.body.ava,
+    isOnline: false,
+    isAdmin: false,
+    chats: []
+  };
 
+  if (req.body.ava.length) {
     const base64Data = req.body.ava.replace(/^data:image\/jpeg;base64,/, "");
 
-    console.log(base64Data, "\n", __dirname, __filename);
+    fs.writeFile(__dirname + "/../localStorage/ava.jpg", base64Data, "base64", (err) => {
+      if (err) console.error(err);
 
-    fs.writeFile(
-      __dirname + "/../localStorage/" + Date.now() + Math.random() + ".jpeg",
-      base64Data,
-      "base64",
-      (err) => {
-        console.error(err);
-      }
-    );
+      cloudinary.uploader.upload(
+        __dirname + "/../localStorage/ava.jpg",
+        { tags: "ava_" + req.body.name },
+        async (err, image) => {
+          if (err) console.warn(err);
+
+          User.create({ ...userData, ava: image.url }, (err, user) => {
+            if (err) console.error(err);
+
+            Chat.create(
+              {
+                participants: [user._id],
+                chatName: "Saved messages",
+                chatType: CHAT_TYPE.saved,
+                ava: "",
+                unreadCount: 0,
+                lastInteraction: "",
+                date: Date.now()
+              },
+              async (err, chat) => {
+                if (err) console.error(err);
+
+                await User.findOneAndUpdate({ _id: user._id }, { chats: [chat._id] });
+              }
+            );
+          });
+        }
+      );
+    });
   } else {
-    const userRes = await User.collection.insertOne({
-      name: req.body.name,
-      password: await bcrypt.hash(req.body.pass, 10),
-      isOnline: false,
-      ava: ""
-    });
+    User.create(userData, (err, user) => {
+      if (err) console.error(err);
 
-    const chatRes = await Chat.collection.insertOne({
-      participants: [userRes.insertedId],
-      chatName: "Saved messages",
-      chatType: CHAT_TYPE.saved,
-      ava: "",
-      unreadCount: 0,
-      lastInteraction: ""
-    });
+      Chat.create(
+        {
+          participants: [user._id],
+          chatName: "Saved messages",
+          chatType: CHAT_TYPE.saved,
+          ava: "",
+          unreadCount: 0,
+          lastInteraction: "",
+          date: Date.now()
+        },
+        async (err, chat) => {
+          if (err) console.error(err);
 
-    await User.findOneAndUpdate({ _id: userRes.insertedId }, { chats: [chatRes.insertedId] });
+          await User.findOneAndUpdate({ _id: user._id }, { chats: [chat._id] });
+        }
+      );
+    });
   }
-
   res.sendStatus(200);
 });
 

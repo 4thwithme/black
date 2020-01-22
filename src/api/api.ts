@@ -4,7 +4,7 @@ const config: AxiosRequestConfig | undefined = {
   headers: { "x-dark-token": sessionStorage.getItem("x-dark-token") }
 };
 
-const loginUser = (name: string, pass: string) => axios.put("auth", { name, password: pass });
+const loginUser = (name: string, pass: string) => axios.put("auth", { name, pass });
 
 const signUpUser = (name: string, pass: string, ava: File) =>
   axios.put("users/create", { name, pass, ava });

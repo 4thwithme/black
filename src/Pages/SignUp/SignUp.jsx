@@ -25,17 +25,18 @@ const SignUp = () => {
   };
 
   const onSubmit = (e) => {
-    console.log(e.name, e.pass, photo, "RRRRRRRRRRRRR");
     API.signUpUser(e.name, e.pass, photo.file)
       .then(() => {
         console.log("registered");
+
+        window.location.href = "/login";
       })
       .catch(console.error);
   };
 
   return (
     <div className='login-wrapper'>
-      <Form onSubmit={(e) => onSubmit(e)} validate={validate}>
+      <Form onSubmit={onSubmit} validate={validate}>
         {({ handleSubmit, submitting, pristine }) => (
           <form onSubmit={handleSubmit}>
             <label htmlFor='file-input' className='img-wrap'>
