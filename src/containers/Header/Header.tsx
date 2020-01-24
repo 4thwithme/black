@@ -13,7 +13,7 @@ const Header = (props: IProps) => {
   const logoutHandler = async () => {
     await API.logoutUser();
 
-    if (!!window.confirm("ar u sure?")) {
+    if (!!window.confirm("are u sure?")) {
       props.handleAuthLogout();
     }
   };
