@@ -64,25 +64,27 @@ router.put("/create", async (req, res) => {
         async (err, image) => {
           if (err) console.warn(err);
 
-          User.create({ ...userData, ava: image.url }, (err, user) => {
-            if (err) console.error(err);
+          fs.unlink(__dirname + "/../localStorage/ava.jpg", () => {
+            User.create({ ...userData, ava: image.url }, (err, user) => {
+              if (err) console.error(err);
 
-            Chat.create(
-              {
-                participants: [user._id],
-                chatName: "Saved messages",
-                chatType: CHAT_TYPE.saved,
-                ava: "",
-                unreadCount: 0,
-                lastInteraction: "",
-                date: Date.now()
-              },
-              async (err, chat) => {
-                if (err) console.error(err);
+              Chat.create(
+                {
+                  participants: [user._id],
+                  chatName: "Saved messages",
+                  chatType: CHAT_TYPE.saved,
+                  ava: "",
+                  unreadCount: 0,
+                  lastInteraction: "",
+                  date: Date.now()
+                },
+                async (err, chat) => {
+                  if (err) console.error(err);
 
-                await User.findOneAndUpdate({ _id: user._id }, { chats: [chat._id] });
-              }
-            );
+                  await User.findOneAndUpdate({ _id: user._id }, { chats: [chat._id] });
+                }
+              );
+            });
           });
         }
       );

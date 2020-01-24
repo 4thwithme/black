@@ -7,8 +7,6 @@ import "./ChatItem.scss";
 import LazyLoadImage from "../../../components/LazyLoadImage/LazyLoadImage";
 
 const ChatItem = ({ chat, setActiveChatId, currentUserId, ...props }) => {
-  console.log("CHAT ITEM RENDER", { chat, setActiveChatId, ...props });
-
   const renderLastMsg = (lastMsg) => {
     if (currentUserId === lastMsg.senderId) {
       return "You: " + lastMsg.body;

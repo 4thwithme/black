@@ -6,6 +6,7 @@ import { setActiveChatId } from "../activeChat/activeChatReducer";
 
 import { Dispatch } from "redux";
 import { IAction } from "../types";
+import { History } from "history";
 
 export const AUTH_LOGIN = "AUTH_LOGIN";
 export const CURRENT_USER_UPDATE = "CURRENT_USER_UPDATE";
@@ -25,6 +26,8 @@ export const handleAuthLogin = (name: string, pass: string) => async (dispatch: 
     LS.authorizeUser(currentUser);
 
     dispatch({ type: SET_IS_AUTH, payload: true });
+
+    window.location.href = "/";
   }
 };
 
@@ -43,7 +46,6 @@ export const handleAuthLogout = () => (dispatch: Dispatch) => {
 };
 
 export const initApp = () => (dispatch: any) => {
-  console.log("INIT APP STARTED");
   const activeChatId = LS.getItem("activeChatId");
 
   dispatch(currentUserUpdate());
@@ -58,7 +60,7 @@ export const initApp = () => (dispatch: any) => {
 
 const initialState = {
   currentUser: null,
-  isAuth: false
+  isAuth: !!LS.getItem("user") || false
 };
 
 export default (state = initialState, { type, payload }: IAction) => {

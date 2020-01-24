@@ -49,7 +49,6 @@ const ChatTimeline = (props: IProps) => {
   }, [messages.length]);
 
   const handleScroll = () => {
-    console.log(timelineRef.current.scrollTop);
     if (timelineRef.current.scrollHeight && timelineRef.current.scrollTop < 400 && !pending) {
       setPending(true);
       props.updateChatTimeline(props.activeChatId, TIMELINE_MSG_LIMIT, messages.length);

@@ -55,9 +55,7 @@ const SocketWrapper = (props: IProps) => {
 
     ws.onmessage = (e) => {
       const { data, type } = JSON.parse(e.data);
-      console.log("=====================================================");
       console.log("CHAT SOCKET EVENT::::::>>> data:", data, "type:", type);
-      console.log("=====================================================");
 
       switch (type) {
         case SOCKET_TYPE.ping: {

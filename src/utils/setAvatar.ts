@@ -1,7 +1,6 @@
 import { IChat, IUser } from "../redux/types";
 
 export const setChatAva = (obj: IChat) => {
-  console.log(obj);
   if (obj.ava) return obj.ava;
 
   switch (obj.chatType) {

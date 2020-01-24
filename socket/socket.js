@@ -24,7 +24,7 @@ setInterval(function() {
     ws.isAlive = false;
     ws.send(JSON.stringify({ type: "ping", data: "ping" }));
   });
-}, 2000);
+}, 8000);
 
 module.exports = {
   onConnectSocket: () =>

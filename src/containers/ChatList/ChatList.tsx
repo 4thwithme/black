@@ -57,10 +57,6 @@ const ChatList = ({ chatsIds, ...props }: IProps) => {
   const memorizedSetActiveChatId = useCallback((id: string) => props.setActiveChatId(id), []);
 
   const handleScroll = () => {
-    console.log(
-      asideRef.current.scrollHeight,
-      asideRef.current.scrollHeight - asideRef.current.scrollTop - asideRef.current.clientHeight
-    );
     if (
       asideRef.current.scrollHeight &&
       asideRef.current.scrollHeight - asideRef.current.scrollTop - asideRef.current.clientHeight <
@@ -73,7 +69,6 @@ const ChatList = ({ chatsIds, ...props }: IProps) => {
       API.getParticipantsByQuery(query, USER_SEARCH_LIMIT, offset)
         .then((res) => {
           setSearchState([...searchState, ...res.data]);
-          console.log("zapros");
         })
         .catch(console.error);
     }

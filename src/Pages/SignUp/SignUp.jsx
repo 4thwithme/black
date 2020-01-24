@@ -27,8 +27,6 @@ const SignUp = () => {
   const onSubmit = (e) => {
     API.signUpUser(e.name, e.pass, photo.file)
       .then(() => {
-        console.log("registered");
-
         window.location.href = "/login";
       })
       .catch(console.error);
@@ -120,7 +118,6 @@ const SignUp = () => {
 const validate = ({ name, pass, pass2 }) => {
   const err = {};
 
-  console.log(name, pass, pass2);
   if (!name || !name.trim().length) {
     err.name = "Chouse your nickname";
   }
