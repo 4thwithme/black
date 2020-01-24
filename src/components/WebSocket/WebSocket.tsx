@@ -5,6 +5,7 @@ import { addNewMsgToActiveChat } from "../../redux/activeChat/activeChatReducer"
 import { addNewChat } from "../../redux/chats/chatsReducer";
 import { SOCKET_TYPE } from "../../api/const";
 import { INewMsg, INewChat } from "../../redux/types";
+import { SOCKET_ROOT } from "../../clientConfig/socketConfig";
 
 interface IProps {
   addNewMsgToActiveChat: (data: INewMsg) => void;
@@ -14,7 +15,7 @@ interface IProps {
 
 const SocketWrapper = (props: IProps) => {
   const { component: Children, addNewMsgToActiveChat, addNewChat } = props;
-  const ws = new WebSocket("ws://localhost:8888");
+  const ws = new WebSocket(SOCKET_ROOT);
 
   useEffect(() => {
     setupSocket();

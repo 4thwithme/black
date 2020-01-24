@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const config = require("config");
 const { onConnectSocket } = require("./socket/socket");
 const cloudinary = require("cloudinary").v2;
+const credentials = require("./config/dbCreds");
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
@@ -33,11 +34,14 @@ app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
 
 mongoose
-  .connect("mongodb://localhost/black", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-  })
+  .connect(
+    `mongodb+srv://${credentials}@cluster0-3afw5.mongodb.net/test?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    }
+  )
   .then(() => {
     if (!config.get("myprivatekey")) {
       process.exit(1);

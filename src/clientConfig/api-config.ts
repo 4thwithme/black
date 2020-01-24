@@ -1,37 +1,40 @@
-import axios from 'axios';
+import axios from "axios";
 
 let backendHost;
 const hostname = window && window.location && window.location.hostname;
 
-if (hostname === 'localhost') {
-  backendHost = 'http://localhost:9999';
+if (hostname === "localhost") {
+  backendHost = "http://localhost:9999";
 }
-else {
-  backendHost = process.env.REACT_APP_BACKEND_HOST || 'http://localhost:9999';
+if (hostname === "blackq.herokuapp.com.") {
+  backendHost = "http://blackq.herokuapp.com.";
+} else {
+  backendHost = process.env.REACT_APP_BACKEND_HOST || "http://localhost:9999";
 }
 
 export const API_ROOT = `${backendHost}/api/`;
 
 axios.defaults.baseURL = API_ROOT;
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('dev - add axios credentials conf');
+if (process.env.NODE_ENV === "development") {
+  console.log("dev - add axios credentials conf");
 
   // axios.defaults.withCredentials = true;
 }
 
 axios.interceptors.response.use(
-  response => {
+  (response) => {
     // Do something with response data
     return Promise.resolve(response);
   },
-  error => {
+  (error) => {
     switch (error.response.status) {
       case 666:
-        window.location.href = '/login';
+        window.location.href = "/login";
         break;
-    
+
       default:
         return Promise.reject(error);
     }
-  });
+  }
+);
