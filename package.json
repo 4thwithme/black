@@ -60,7 +60,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon ./index.js"
+    "server": "nodemon ./index.js",
+    "gotoprod": "./gotoprod.sh"
   },
   "eslintConfig": {
     "extends": "react-app"

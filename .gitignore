@@ -10,8 +10,9 @@
 
 # production
 /build
+*.sh
 
-/config/*
+# /config/*
 /localStorage/*
 
 # misc
