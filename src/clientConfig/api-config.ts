@@ -6,7 +6,7 @@ const hostname = window && window.location && window.location.hostname;
 if (hostname === "localhost") {
   backendHost = "http://localhost:9999";
 } else if (hostname === "blackq.herokuapp.com") {
-  backendHost = `https://blackq.herokuapp.com:${process.env.PORT}`;
+  backendHost = "https://blackq.herokuapp.com";
 } else {
   backendHost = process.env.REACT_APP_BACKEND_HOST;
 }
