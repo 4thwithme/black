@@ -5,12 +5,11 @@ const hostname = window && window.location && window.location.hostname;
 
 if (hostname === "localhost") {
   backendHost = "http://localhost:9999";
-} else if (hostname === "blackq.herokuapp.com.") {
-  backendHost = "https://blackq.herokuapp.com.";
+} else if (hostname === "blackq.herokuapp.com") {
+  backendHost = "https://blackq.herokuapp.com";
+} else {
+  backendHost = process.env.REACT_APP_BACKEND_HOST;
 }
-// else {
-// backendHost = process.env.REACT_APP_BACKEND_HOST;
-// }
 
 export const API_ROOT = `${backendHost}/api/`;
 
