@@ -16,9 +16,7 @@ export const API_ROOT = `${backendHost}/api/`;
 axios.defaults.baseURL = API_ROOT;
 
 if (process.env.NODE_ENV === "development") {
-  console.log("dev - add axios credentials conf");
-
-  // axios.defaults.withCredentials = true;
+  console.log("process.env.NODE_ENV - ", process.env.NODE_ENV);
 }
 
 axios.interceptors.response.use(
