@@ -56,11 +56,11 @@
     "ws": "^7.2.0"
   },
   "scripts": {
-    "start111": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "nodemon ./index.js",
+    "heroku-postbuild": "nodemon ./index.js",
     "gotoprod": "./gotoprod.sh"
   },
   "eslintConfig": {
