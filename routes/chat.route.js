@@ -14,8 +14,8 @@ router.get(`/timeline/`, auth, async (req, res) => {
 
   const messages = await Message.getChatTimelineByChatId(
     req.query.chatId,
-    parseInt(req.query.limit),
-    parseInt(req.query.offset)
+    +req.query.limit,
+    +req.query.offset
   );
 
   const reversedMesseges = messages.reverse();
