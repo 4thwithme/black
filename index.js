@@ -10,7 +10,7 @@ const usersRoute = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
 const chatRouter = require("./routes/chat.route");
 
-const port = process.env.PORT || 9999;
+const port = 9999;
 
 const app = express();
 
