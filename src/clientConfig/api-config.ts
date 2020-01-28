@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "development") {
 
 axios.interceptors.response.use(
   (response) => {
-    // Do something with response data
+    // Do something with response dataa
     return Promise.resolve(response);
   },
   (error) => {
