@@ -12,4 +12,4 @@ web: yarn build
 && cp ./utils ./build
 && cp ./package.json ./build
 && cp ./tsconfig.json ./build
-&&  node ./index.js
+&&  node ./build/index.js
