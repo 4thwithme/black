@@ -5,12 +5,15 @@ const config = require("config");
 const { onConnectSocket } = require("./socket/socket");
 const cloudinary = require("cloudinary").v2;
 const credentials = require("./config/dbCreds");
+const path = require("path");
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
 const chatRouter = require("./routes/chat.route");
 
-const port = process.env.PORT || 9999;
+const normalizePort = (port) => parseInt(port, 10);
+
+const PORT = normalizePort(process.env.PORT || 9999);
 
 const app = express();
 
@@ -29,9 +32,15 @@ app.use(cookieParser());
 app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(express.json({ limit: "50mb" }));
 
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
+
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
+
+app.use(express.static(path.resolve(__dirname, "build")));
 
 mongoose
   .connect(
@@ -46,8 +55,8 @@ mongoose
     if (!config.get("myprivatekey")) {
       process.exit(1);
     }
-    app.listen(port, () => {
-      console.log(`Listening on port ${port}...`);
+    app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}...`);
 
       cloudinary.config({
         cloud_name: "dy0mga9td",
