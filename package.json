@@ -63,7 +63,9 @@
     "server": "nodemon ./index.js"
   },
   "engines": {
-    "node": "13.x"
+    "node": "13.3.0",
+    "yarn": "1.19.2",
+    "npn": "6.13.1"
   },
   "eslintConfig": {
     "extends": "react-app"

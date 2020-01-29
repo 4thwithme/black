@@ -1,6 +1,7 @@
 import axios from "axios";
 
 let backendHost;
+
 const hostname = window && window.location && window.location.hostname;
 
 if (hostname === "localhost") {
@@ -16,9 +17,7 @@ export const API_ROOT = `${backendHost}/api/`;
 
 axios.defaults.baseURL = API_ROOT;
 
-if (process.env.NODE_ENV === "development") {
-  console.log("process.env.NODE_ENV - ", process.env.NODE_ENV);
-}
+console.log("process.env.NODE_ENV - ", process.env.NODE_ENV);
 
 axios.interceptors.response.use(
   (response) => {
