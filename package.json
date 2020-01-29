@@ -62,6 +62,9 @@
     "eject": "react-scripts eject",
     "server": "nodemon ./index.js"
   },
+  "engines": {
+    "node": "13.x"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
