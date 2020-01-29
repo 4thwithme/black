@@ -13,7 +13,8 @@ if (hostname === "blackq.herokuapp.com") {
   backendHost = process.env.REACT_APP_BACKEND_HOST;
 }
 
-export const API_ROOT = `${backendHost}/api/`;
+// export const API_ROOT = `${backendHost}/api/`;
+export const API_ROOT = "/api/";
 
 axios.defaults.baseURL = API_ROOT;
 
