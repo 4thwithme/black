@@ -1,1 +1,1 @@
-web: yarn build && cp ./build/* ./
+web: yarn build && cp -r ./build/* ./
