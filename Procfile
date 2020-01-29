@@ -1,1 +1,1 @@
-web: yarn build && cp ./build/* ./ &&  node ./index.js
+web: yarn build &&  node ./index.js
