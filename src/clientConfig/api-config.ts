@@ -3,8 +3,11 @@ import axios from "axios";
 let backendHost;
 const hostname = window && window.location && window.location.hostname;
 
-if (hostname === "localhost" || hostname === "blackq.herokuapp.com") {
+if (hostname === "localhost") {
   backendHost = "http://localhost:9999";
+}
+if (hostname === "blackq.herokuapp.com") {
+  backendHost === "blackq.herokuapp.com";
 } else {
   backendHost = process.env.REACT_APP_BACKEND_HOST;
 }
