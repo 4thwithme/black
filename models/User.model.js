@@ -44,7 +44,7 @@ UserSchema.statics.logoutById = async function(userId) {
   if (userId) {
     const user = await this.findById(userId);
 
-    if (user.isOnline) {
+    if (user && user.isOnline) {
       user.isOnline = false;
       await user.save();
 
@@ -61,7 +61,7 @@ UserSchema.statics.reloginForReload = async function(userId) {
   if (userId) {
     const user = await this.findById(userId);
 
-    if (!user.isOnline) {
+    if (user && !user.isOnline) {
       user.isOnline = true;
       await user.save();
 

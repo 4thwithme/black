@@ -18,7 +18,7 @@ const PORT = normalizePort(process.env.PORT || 9999);
 
 const app = express();
 
-const dev = app.get("env") !== "production";
+// const dev = app.get("env") !== "production";
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -35,19 +35,15 @@ app.use(cookieParser());
 app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(express.json({ limit: "50mb" }));
 
-if (!dev) {
-  app.disable("x-powered-by");
-
-  app.use(express.static(path.resolve(__dirname, "build")));
-
-  app.get("*", checkRoute, (req, res) => {
-    console.log(req.path);
-  });
-}
-
-app.use("/api/users", usersRoute);
 app.use("/api/auth", authRouter);
 app.use("/api/chat", chatRouter);
+app.use("/api/users", usersRoute);
+
+app.use(express.static(path.resolve(__dirname, "build")));
+
+app.get("*", checkRoute, (req, res) => {
+  console.log(req.path);
+});
 
 mongoose
   .connect(

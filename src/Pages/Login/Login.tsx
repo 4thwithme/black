@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import "./Login.scss";
 import { setCurrentWindow } from "../../redux/activeWindow/activeWindowReducer";
 import { handleAuthLogin } from "../../redux/auth/authReducer";
+import LS from "../../utils/LS";
 
 interface ISetState {
   name: string;
@@ -21,6 +22,13 @@ const Login = (props: ILogin) => {
     name: "",
     pass: ""
   });
+
+  useEffect(() => {
+    const user = LS.getItem("user");
+    if (user) {
+      window.location.href = "/";
+    }
+  }, []);
 
   const setField = (e: React.FormEvent<HTMLInputElement>, key: string) => {
     e.preventDefault();

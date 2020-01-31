@@ -6,15 +6,14 @@ const hostname = window && window.location && window.location.hostname;
 
 if (hostname === "localhost") {
   backendHost = "http://localhost:9999";
-}
-if (hostname === "blackq.herokuapp.com") {
+} else if (hostname === "blackq.herokuapp.com") {
   backendHost = "blackq.herokuapp.com";
 } else {
   backendHost = process.env.REACT_APP_BACKEND_HOST;
 }
 
-// export const API_ROOT = `${backendHost}/api/`;
-export const API_ROOT = "/api/";
+export const API_ROOT = `${backendHost}/api/`;
+// export const API_ROOT = "/api/";
 
 axios.defaults.baseURL = API_ROOT;
 
