@@ -6,6 +6,7 @@ const { onConnectSocket } = require("./socket/socket");
 const cloudinary = require("cloudinary").v2;
 const credentials = require("./config/dbCreds");
 const path = require("path");
+const checkRoute = require("./middleware/checkRoute");
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
@@ -16,6 +17,8 @@ const normalizePort = (port) => parseInt(port, 10);
 const PORT = normalizePort(process.env.PORT || 9999);
 
 const app = express();
+
+const dev = app.get("env") !== "production";
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -32,11 +35,15 @@ app.use(cookieParser());
 app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(express.json({ limit: "50mb" }));
 
-app.use(express.static(path.resolve(__dirname, "build")));
+if (!dev) {
+  app.disable("x-powered-by");
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "build", "index.html"));
-});
+  app.use(express.static(path.resolve(__dirname, "build")));
+
+  app.get("*", checkRoute, (req, res) => {
+    console.log(req.path);
+  });
+}
 
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRouter);
