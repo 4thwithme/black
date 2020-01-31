@@ -12,8 +12,7 @@ if (hostname === "localhost") {
   backendHost = process.env.REACT_APP_BACKEND_HOST;
 }
 
-export const API_ROOT = `${backendHost}/api/`;
-// export const API_ROOT = "/api/";
+export const API_ROOT = hostname === "localhost" ? `${backendHost}/api/` : "/api/";
 
 axios.defaults.baseURL = API_ROOT;
 
