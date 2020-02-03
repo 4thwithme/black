@@ -1,7 +1,8 @@
-const WebSocket = require("ws");
+// const WebSocket = require("ws");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
+// const server = require("../index");
 const Message = require("../models/Message.model");
 const Chat = require("../models/Chat.model");
 const { User } = require("../models/User.model");
@@ -9,14 +10,15 @@ const { User } = require("../models/User.model");
 const { sendMsgToChat } = require("../utils/utils");
 const { SOCKET_TYPE } = require("../const/const");
 
-const socket = new WebSocket.Server({ port: 8888 });
+// const wss = new WebSocket.Server({ server });
+let wss;
 
 function heartbeat(ws) {
   ws.isAlive = true;
 }
 
 setInterval(function() {
-  socket.clients.forEach(function each(ws) {
+  wss.clients.forEach(function each(ws) {
     if (ws.isAlive === false) {
       return ws.terminate();
     }
@@ -27,8 +29,10 @@ setInterval(function() {
 }, 8000);
 
 module.exports = {
-  onConnectSocket: () =>
-    socket.on("connection", async (ws, req) => {
+  onConnectSocket: (socket) => {
+    wss = socket;
+
+    wss.on("connection", async (ws, req) => {
       if (req.headers.cookie) {
         const token = req.headers.cookie.split("=")[1];
         const decoded = jwt.verify(token, config.get("myprivatekey"));
@@ -89,7 +93,7 @@ module.exports = {
               }
             };
 
-            for (const client of socket.clients) {
+            for (const client of wss.clients) {
               if (client.connectedUserId === parsedData.data.senderId) {
                 sendMsgToChat(client, chatWithParticipants, newChatMsg.ops[0], "out");
                 continue;
@@ -106,10 +110,11 @@ module.exports = {
             break;
         }
       };
-    }),
+    });
+  },
 
   sendSocket: (ids, data, type) => {
-    for (const client of socket.clients) {
+    for (const client of wss.clients) {
       if (ids.includes(client.connectedUserId)) {
         client.send(JSON.stringify({ type, data }));
       }

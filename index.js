@@ -7,6 +7,7 @@ const cloudinary = require("cloudinary").v2;
 const credentials = require("./config/dbCreds");
 const path = require("path");
 const checkRoute = require("./middleware/checkRoute");
+const WebSocket = require("ws");
 
 const usersRoute = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
@@ -17,8 +18,6 @@ const normalizePort = (port) => parseInt(port, 10);
 const PORT = normalizePort(process.env.PORT || 9999);
 
 const app = express();
-
-// const dev = app.get("env") !== "production";
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -45,6 +44,8 @@ app.get("*", checkRoute, (req, res) => {
   console.log(req.path);
 });
 
+let wss;
+
 mongoose
   .connect(
     `mongodb+srv://${credentials}@cluster0-3afw5.mongodb.net/test?retryWrites=true&w=majority`,
@@ -58,7 +59,7 @@ mongoose
     if (!config.get("myprivatekey")) {
       process.exit(1);
     }
-    app.listen(PORT, () => {
+    app.listen(PORT, async () => {
       console.log(`Listening on port ${PORT}...`);
 
       cloudinary.config({
@@ -67,7 +68,9 @@ mongoose
         api_secret: "9mZD9yNLlkFkY5OEnqCtU5pHTEA"
       });
 
-      onConnectSocket();
+      wss = await new WebSocket.Server({ server: app });
+
+      onConnectSocket(wss);
     });
   })
   .catch((err) => console.error(err));
